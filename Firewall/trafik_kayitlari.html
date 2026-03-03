@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Trafik Kayıtları - Black Barrier</title>
+    <!-- Tailwind CSS ve Fontlar -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <!-- Özel Tailwind Konfigürasyonu -->
+    <script src="varliklar/js/tailwind_ayar.js"></script>
+    <script src="varliklar/js/arayuz.js"></script>
+    <!-- Ortak Stil -->
+    <link rel="stylesheet" href="varliklar/css/stil.css">
+</head>
+
+<body class="bg-arkaplan-acik text-birincil font-ekran h-screen flex overflow-hidden">
+
+    <!-- Sol Menü / Sidebar -->
+    <div class="hidden md:flex flex-col w-64 h-full border-r-2 border-kenarlik-kalin bg-[#E2E8F0] z-20 shrink-0">
+        <!-- Logo ve Başlık -->
+        <div class="p-6 border-b-2 border-kenarlik-kalin bg-yuzey-vurgu flex-none">
+            <div class="flex items-center gap-3">
+                <div
+                    class="bg-birincil text-white flex items-center justify-center font-bold font-kod text-lg size-10 border border-kenarlik-kalin">
+                    BB</div>
+                <div class="flex flex-col">
+                    <h1 class="text-slate-900 text-base font-bold leading-none tracking-tight">Black Barrier</h1>
+                    <p class="text-slate-500 text-xs font-kod mt-1">AĞ GÜVENLİĞİ</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menü Linkleri -->
+        <div class="flex flex-col flex-1 p-4 gap-2 overflow-y-auto">
+            <a class="flex items-center gap-3 px-3 py-3 hover:bg-white border border-transparent hover:border-slate-300 transition-colors group"
+                href="kontrol_paneli.html">
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-birincil">dashboard</span>
+                <span class="text-sm font-bold tracking-wide text-slate-700 group-hover:text-slate-900">KONTROL
+                    PANELİ</span>
+            </a>
+
+            <a class="flex items-center gap-3 px-3 py-3 hover:bg-white border border-transparent hover:border-slate-300 transition-colors group"
+                href="kurallar.html">
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-birincil">shield</span>
+                <span class="text-sm font-bold tracking-wide text-slate-700 group-hover:text-slate-900">GÜVENLİK
+                    KURALLARI</span>
+            </a>
+
+            <a class="flex items-center gap-3 px-3 py-3 hover:bg-white border border-transparent hover:border-slate-300 transition-colors group"
+                href="yonlendirme.html">
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-birincil">route</span>
+                <span
+                    class="text-sm font-bold tracking-wide text-slate-700 group-hover:text-slate-900">YÖNLENDİRME</span>
+            </a>
+
+            <a class="flex items-center gap-3 px-3 py-3 hover:bg-white border border-transparent hover:border-slate-300 transition-colors group"
+                href="dhcp_sunucu.html">
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-birincil">wifi_tethering</span>
+                <span class="text-sm font-bold tracking-wide text-slate-700 group-hover:text-slate-900">DHCP
+                    SUNUCU</span>
+            </a>
+
+            <a class="flex items-center gap-3 px-3 py-3 bg-white border-l-4 border-l-birincil border-y border-r border-y-slate-300 border-r-slate-300 shadow-sm group"
+                href="trafik_kayitlari.html">
+                <span class="material-symbols-outlined text-birincil">receipt_long</span>
+                <span class="text-sm font-bold tracking-wide text-slate-900">TRAFİK KAYITLARI</span>
+            </a>
+        </div>
+
+        <!-- Profil Aracı -->
+        <div class="p-4 border-t-2 border-kenarlik-kalin bg-yuzey mt-auto flex-none relative">
+            <div id="profilButonu"
+                class="flex items-center justify-center gap-3 h-10 px-4 bg-slate-800 hover:bg-slate-900 text-white cursor-pointer rounded-sm transition-colors w-full group">
+                <div class="size-6 bg-slate-600 rounded-full flex items-center justify-center font-bold text-xs">AD
+                </div>
+                <span class="text-xs font-bold tracking-wider uppercase">PROFİL AYARLARI</span>
+            </div>
+
+            <!-- Açılır Menü -->
+            <div id="profilMenusu"
+                class="hidden absolute bottom-full left-4 mb-2 w-56 bg-yuzey border-2 border-kenarlik-kalin shadow-2xl z-50 transform origin-bottom-left transition-all">
+                <div class="p-3 border-b border-slate-200">
+                    <div class="text-sm font-bold text-slate-900 uppercase">Admin</div>
+                    <div class="text-[10px] font-kod text-slate-500 mt-1">Sistem Yöneticisi</div>
+                </div>
+                <div class="p-1">
+                    <a href="ayarlar.html"
+                        class="flex items-center gap-2 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 hover:text-birincil">
+                        <span class="material-symbols-outlined text-base">tune</span> Ayarlar
+                    </a>
+                    <a href="giris.html"
+                        class="flex items-center gap-2 px-3 py-2 text-xs font-bold text-durum-kritik hover:bg-red-50 mt-1 border-t border-slate-200">
+                        <span class="material-symbols-outlined text-base">logout</span> Sisteme Veda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ana Alan -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-arkaplan-acik relative">
+
+        <!-- Üst Bar / Toolbar -->
+        <header
+            class="flex-none h-16 border-b-2 border-kenarlik-kalin bg-yuzey flex items-center justify-between px-6 z-10 w-full">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="relative flex h-3 w-3">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-durum-uyari opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-durum-uyari"></span>
+                    </span>
+                    <h2 class="text-sm font-bold tracking-widest text-slate-800 uppercase font-kod">Canlı Ağ Akışı</h2>
+                </div>
+                <div class="h-6 w-px bg-slate-300"></div>
+                <div class="text-[11px] font-kod text-slate-500 uppercase flex items-center gap-2">
+                    <span>Saniye Başına Paket:</span>
+                    <span class="font-bold text-birincil">null</span>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button
+                    class="flex items-center gap-2 px-3 py-1.5 bg-white border-2 border-slate-300 hover:border-birincil text-xs font-bold transition-colors">
+                    <span class="material-symbols-outlined text-base">pause</span>
+                    DURDUR
+                </button>
+                <button
+                    class="flex items-center gap-2 px-3 py-1.5 bg-white border-2 border-slate-300 hover:border-birincil text-xs font-bold transition-colors">
+                    <span class="material-symbols-outlined text-base">filter_list</span>
+                    FİLTRE (0)
+                </button>
+                <button
+                    class="flex items-center gap-2 px-3 py-1.5 bg-birincil hover:bg-birincil-acik text-white text-xs font-bold transition-colors">
+                    <span class="material-symbols-outlined text-base">download</span>
+                    DIŞA AKTAR (PCAP)
+                </button>
+            </div>
+        </header>
+
+        <!-- Filtre Matrisi -->
+        <div
+            class="flex-none p-4 bg-slate-100 border-b-2 border-kenarlik-kalin flex flex-wrap gap-4 items-center w-full z-10">
+            <span class="text-xs font-bold text-slate-500 uppercase font-kod">Hızlı Filtreler:</span>
+
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+                <input checked=""
+                    class="w-4 h-4 text-birincil bg-white border-2 border-slate-400 focus:ring-0 rounded-none"
+                    type="checkbox" />
+                <span class="text-[11px] font-bold text-slate-700 uppercase">Geçen (PASS)</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+                <input checked=""
+                    class="w-4 h-4 text-durum-kritik bg-white border-2 border-slate-400 focus:ring-0 rounded-none"
+                    type="checkbox" />
+                <span class="text-[11px] font-bold text-slate-700 uppercase">Düşen (BLOCK)</span>
+            </label>
+
+            <div class="h-4 w-px bg-slate-300 mx-2"></div>
+
+            <input
+                class="w-48 px-3 py-1.5 text-xs font-kod bg-white border-2 border-slate-300 focus:border-birincil outline-none uppercase"
+                placeholder="KAYNAK IP ARA..." type="text" />
+            <input
+                class="w-48 px-3 py-1.5 text-xs font-kod bg-white border-2 border-slate-300 focus:border-birincil outline-none uppercase"
+                placeholder="HEDEF IP ARA..." type="text" />
+            <input
+                class="w-24 px-3 py-1.5 text-xs font-kod bg-white border-2 border-slate-300 focus:border-birincil outline-none uppercase"
+                placeholder="PORT..." type="text" />
+
+            <select
+                class="px-3 py-1.5 text-xs font-kod bg-white border-2 border-slate-300 focus:border-birincil outline-none font-bold uppercase">
+                <option>TÜM PROTOKOLLER</option>
+                <option>TCP</option>
+                <option>UDP</option>
+                <option>ICMP</option>
+            </select>
+        </div>
+
+        <!-- Ana Tablo ve Detay Paneli Alanı -->
+        <div class="flex-1 flex overflow-hidden w-full relative">
+
+            <!-- Log Tablosu -->
+            <div class="flex-1 overflow-auto bg-yuzey z-0">
+                <table
+                    class="w-full text-left veri-tablosu whitespace-nowrap bg-yuzey font-kod text-[11px] text-slate-900 border-collapse cursor-default">
+                    <thead class="bg-slate-50 sticky top-0 border-b-2 border-kenarlik-kalin shadow-sm z-10">
+                        <tr>
+                            <th
+                                class="py-2 px-3 font-ekran text-xs font-bold text-slate-600 uppercase border-r border-slate-200">
+                                Durum</th>
+                            <th
+                                class="py-2 px-3 font-ekran text-xs font-bold text-slate-600 uppercase border-r border-slate-200">
+                                Zaman Damgası</th>
+                            <th
+                                class="py-2 px-3 font-ekran text-xs font-bold text-slate-600 uppercase border-r border-slate-200">
+                                Arayüz</th>
+                            <th
+                                class="py-2 px-3 font-ekran text-xs font-bold text-slate-600 uppercase border-r border-slate-200">
+                                Kaynak (Gönderen)</th>
+                            <th
+                                class="py-2 px-3 font-ekran text-xs font-bold text-slate-600 uppercase border-r border-slate-200">
+                                Prt.</th>
+                            <th
+                                class="py-2 px-3 font-ekran text-xs font-bold text-slate-600 uppercase border-r border-slate-200">
+                                Hedef (Kurtarıcı)</th>
+                            <th
+                                class="py-2 px-3 font-ekran text-xs font-bold text-slate-600 uppercase border-r border-slate-200">
+                                Bayraklar (Flags)</th>
+                            <th class="py-2 px-3 font-ekran text-xs font-bold text-slate-600 uppercase">Kural ID</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <!-- Data is completely cleared -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Sağ Çekmece - Paket Detayları (Açıkken width verilir) -->
+            <div class="w-96 bg-slate-50 border-l-2 border-kenarlik-kalin shadow-2xl flex flex-col z-20 shrink-0 transform transition-transform translate-x-full absolute right-0 inset-y-0"
+                id="paketDetayCekmecesi">
+
+                <div class="h-16 flex items-center justify-between px-4 border-b-2 border-slate-200 bg-yuzey">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-birincil flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">plumbing</span>
+                        Paket İnceleme L4
+                    </h3>
+                    <button class="text-slate-400 hover:text-durum-kritik"
+                        onclick="document.getElementById('paketDetayCekmecesi').classList.add('translate-x-full');">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4 font-kod text-[11px] text-slate-800">
+
+                    <div class="bg-white border-2 border-durum-kritik p-3 shadow-sm relative overflow-hidden">
+                        <div class="absolute right-0 top-0 bottom-0 w-1 bg-durum-kritik"></div>
+                        <div class="font-bold text-durum-kritik uppercase mb-2 border-b border-red-100 pb-1">Denetim
+                            Sonucu</div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <span class="text-slate-500">Aksiyon:</span>
+                            <span class="font-bold text-durum-kritik">null</span>
+                            <span class="text-slate-500">Eşleşen Kural:</span>
+                            <span class="text-birincil font-bold underline cursor-pointer">null</span>
+                            <span class="text-slate-500">Arayüz Geçişi:</span>
+                            <span>null</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 p-3 shadow-sm">
+                        <div
+                            class="font-bold text-slate-600 uppercase mb-2 border-b border-slate-100 pb-1 flex items-center justify-between">
+                            <span>Ağ Katmanı (IPv4)</span>
+                            <span class="text-[9px] bg-slate-100 px-1 border border-slate-200 text-slate-400">Layer
+                                3</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <span class="text-slate-500">Kaynak IP:</span>
+                            <span class="font-bold">null</span>
+                            <span class="text-slate-500">Hedef IP:</span>
+                            <span class="font-bold">null</span>
+                            <span class="text-slate-500">TOS (Type of Service):</span>
+                            <span>null</span>
+                            <span class="text-slate-500">TTL (Time to Live):</span>
+                            <span>null</span>
+                            <span class="text-slate-500">Toplam Uzunluk:</span>
+                            <span>null Byte</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 p-3 shadow-sm">
+                        <div
+                            class="font-bold text-slate-600 uppercase mb-2 border-b border-slate-100 pb-1 flex items-center justify-between">
+                            <span>Taşıma Katmanı (TCP)</span>
+                            <span class="text-[9px] bg-slate-100 px-1 border border-slate-200 text-slate-400">Layer
+                                4</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <span class="text-slate-500">Kaynak Port:</span>
+                            <span class="font-bold text-birincil">null</span>
+                            <span class="text-slate-500">Hedef Port:</span>
+                            <span class="font-bold text-durum-kritik">null (null)</span>
+                            <span class="text-slate-500">TCP Bayrakları:</span>
+                            <span class="font-bold text-red-600">null</span>
+                            <span class="text-slate-500">Pencere (Window):</span>
+                            <span>null</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border-2 border-slate-700 p-3 shadow-inner text-slate-300 mt-2">
+                        <div
+                            class="font-bold text-slate-400 uppercase mb-2 border-b border-slate-700 pb-1 text-[9px] flex justify-between">
+                            <span>HEX DÖKÜMÜ (RAW PAYLOAD)</span>
+                            <span>null Byte</span>
+                        </div>
+                        <div class="font-kod text-[9px] whitespace-pre-wrap leading-relaxed select-all">null
+                            null
+                            null</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+</body>
+
+</html>

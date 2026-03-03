@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Yönlendirme (Routing) - Black Barrier</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="varliklar/js/tailwind_ayar.js"></script>
+    <script src="varliklar/js/arayuz.js"></script>
+    <link rel="stylesheet" href="varliklar/css/stil.css">
+    <style>
+        .veri-tablosu td {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .veri-tablosu tr:hover {
+            background-color: #F8FAFC;
+        }
+    </style>
+</head>
+
+<body class="bg-arkaplan-acik text-birincil font-ekran h-screen flex overflow-hidden">
+
+    <!-- Sol Menü -->
+    <div class="hidden md:flex flex-col w-64 h-full border-r-2 border-kenarlik-kalin bg-[#E2E8F0] z-20 shrink-0">
+        <div class="p-6 border-b-2 border-kenarlik-kalin bg-yuzey-vurgu flex-none">
+            <div class="flex items-center gap-3">
+                <div
+                    class="bg-birincil text-white flex items-center justify-center font-bold font-kod text-lg size-10 border border-kenarlik-kalin">
+                    BB</div>
+                <div class="flex flex-col">
+                    <h1 class="text-slate-900 text-base font-bold leading-none tracking-tight">Black Barrier</h1>
+                    <p class="text-slate-500 text-xs font-kod mt-1">AĞ GÜVENLİĞİ</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col flex-1 p-4 gap-2 overflow-y-auto">
+            <a class="flex items-center gap-3 px-3 py-3 hover:bg-white border border-transparent hover:border-slate-300 transition-colors group"
+                href="kontrol_paneli.html">
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-birincil">dashboard</span>
+                <span class="text-sm font-bold tracking-wide text-slate-700 group-hover:text-slate-900">KONTROL
+                    PANELİ</span>
+            </a>
+
+            <a class="flex items-center gap-3 px-3 py-3 hover:bg-white border border-transparent hover:border-slate-300 transition-colors group"
+                href="kurallar.html">
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-birincil">shield</span>
+                <span class="text-sm font-bold tracking-wide text-slate-700 group-hover:text-slate-900">GÜVENLİK
+                    KURALLARI</span>
+            </a>
+
+            <a class="flex items-center gap-3 px-3 py-3 bg-white border-l-4 border-l-birincil border-y border-r border-y-slate-300 border-r-slate-300 shadow-sm group"
+                href="yonlendirme.html">
+                <span class="material-symbols-outlined text-birincil">route</span>
+                <span class="text-sm font-bold tracking-wide text-slate-900">YÖNLENDİRME</span>
+            </a>
+
+            <a class="flex items-center gap-3 px-3 py-3 hover:bg-white border border-transparent hover:border-slate-300 transition-colors group"
+                href="dhcp_sunucu.html">
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-birincil">wifi_tethering</span>
+                <span class="text-sm font-bold tracking-wide text-slate-700 group-hover:text-slate-900">DHCP
+                    SUNUCU</span>
+            </a>
+
+            <a class="flex items-center gap-3 px-3 py-3 hover:bg-white border border-transparent hover:border-slate-300 transition-colors group"
+                href="trafik_kayitlari.html">
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-birincil">receipt_long</span>
+                <span class="text-sm font-bold tracking-wide text-slate-700 group-hover:text-slate-900">TRAFİK
+                    KAYITLARI</span>
+            </a>
+        </div>
+
+        <!-- Profil Aracı -->
+        <div class="p-4 border-t-2 border-kenarlik-kalin bg-yuzey mt-auto flex-none relative">
+            <div id="profilButonu"
+                class="flex items-center justify-center gap-3 h-10 px-4 bg-slate-800 hover:bg-slate-900 text-white cursor-pointer rounded-sm transition-colors w-full group">
+                <div class="size-6 bg-slate-600 rounded-full flex items-center justify-center font-bold text-xs">AD
+                </div>
+                <span class="text-xs font-bold tracking-wider uppercase">PROFİL AYARLARI</span>
+            </div>
+
+            <!-- Açılır Menü -->
+            <div id="profilMenusu"
+                class="hidden absolute bottom-full left-4 mb-2 w-56 bg-yuzey border-2 border-kenarlik-kalin shadow-2xl z-50 transform origin-bottom-left transition-all">
+                <div class="p-3 border-b border-slate-200">
+                    <div class="text-sm font-bold text-slate-900 uppercase">Admin</div>
+                    <div class="text-[10px] font-kod text-slate-500 mt-1">Sistem Yöneticisi</div>
+                </div>
+                <div class="p-1">
+                    <a href="ayarlar.html"
+                        class="flex items-center gap-2 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 hover:text-birincil">
+                        <span class="material-symbols-outlined text-base">tune</span> Ayarlar
+                    </a>
+                    <a href="giris.html"
+                        class="flex items-center gap-2 px-3 py-2 text-xs font-bold text-durum-kritik hover:bg-red-50 mt-1 border-t border-slate-200">
+                        <span class="material-symbols-outlined text-base">logout</span> Sisteme Veda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ana İçerik -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-arkaplan-acik relative">
+
+        <!-- Başlık -->
+        <header
+            class="flex-none h-20 border-b-2 border-kenarlik-kalin bg-arkaplan-acik px-6 flex items-center justify-between z-10">
+            <div class="flex flex-col">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-2xl font-bold tracking-tight text-birincil uppercase">Ağ Geçitleri (Gateways)</h2>
+                    <span class="text-slate-400 text-lg font-light">// STATİK_ROTA</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button
+                    class="flex items-center justify-center h-10 px-6 bg-birincil text-white font-bold transition-colors uppercase gap-2 hover:bg-birincil-acik">
+                    <span class="material-symbols-outlined text-lg">add</span>
+                    YENİ AĞ GEÇİDİ EKLE
+                </button>
+            </div>
+        </header>
+
+        <!-- İçerik Sekmeleri (OPNsense vari) -->
+        <div class="bg-yuzey border-b-2 border-kenarlik-kalin px-6 flex gap-6">
+            <button class="py-3 border-b-4 border-birincil text-birincil font-bold uppercase text-sm">Tekli Ağ
+                Geçitleri</button>
+            <button
+                class="py-3 border-b-4 border-transparent text-slate-500 hover:text-birincil font-bold uppercase text-sm">Grup
+                Ağ Geçitleri</button>
+            <button
+                class="py-3 border-b-4 border-transparent text-slate-500 hover:text-birincil font-bold uppercase text-sm">Rotalar
+                (Routes)</button>
+        </div>
+
+        <!-- Ağ Geçidi Tablosu -->
+        <div class="flex-1 overflow-auto bg-arkaplan-acik p-6">
+            <div class="border-2 border-kenarlik-kalin bg-yuzey shadow-sm relative">
+                <table class="w-full text-left veri-tablosu whitespace-nowrap bg-yuzey font-kod text-sm text-slate-700">
+                    <thead class="bg-slate-50 sticky top-0 border-b-2 border-kenarlik-kalin shadow-sm z-10">
+                        <tr>
+                            <th class="py-3 px-4 font-ekran text-xs font-bold text-slate-600 uppercase">İsim</th>
+                            <th class="py-3 px-4 font-ekran text-xs font-bold text-slate-600 uppercase">Arayüz
+                                (Interface)</th>
+                            <th class="py-3 px-4 font-ekran text-xs font-bold text-slate-600 uppercase">Protokol</th>
+                            <th class="py-3 px-4 font-ekran text-xs font-bold text-slate-600 uppercase">Ağ Geçidi IP
+                            </th>
+                            <th class="py-3 px-4 font-ekran text-xs font-bold text-slate-600 uppercase">İzleme (Monitor
+                                IP)</th>
+                            <th class="py-3 px-4 font-ekran text-xs font-bold text-slate-600 uppercase w-32">Durum</th>
+                            <th class="text-right py-3 pr-6 w-24">Aksiyon</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Veriler temizlendi -->
+                    </tbody>
+                </table>
+                <div class="p-8 text-center text-slate-400 font-kod text-sm uppercase border-t border-slate-200">Ağ
+                    Geçidi Bulunmuyor</div>
+            </div>
+
+            <p class="text-xs text-slate-500 font-kod mt-4">Not: Sadece ağ geçidi tabanlı statik veya dinamik
+                rotalandırma (routing) yapınız. Güvenlik kurallarını "Güvenlik Kuralları" sekmesinden izole şekilde
+                yönetin.</p>
+        </div>
+
+    </main>
+</body>
+
+</html>

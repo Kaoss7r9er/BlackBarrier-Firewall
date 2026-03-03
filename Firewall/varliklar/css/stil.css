@@ -1,0 +1,60 @@
+/* Firewall Özel Ortak CSS */
+
+/* Orijinal tasarımdaki endüstriyel hissi veren kaydırma çubukları */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #E2E8F0; /* Slate 200 */
+}
+::-webkit-scrollbar-thumb {
+    background: #64748B; /* Slate 500 */
+    border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #334155; /* Slate 700 */
+}
+
+/* Nokta Arkaplan Deseni (Dashboard için) */
+.noktali-arkaplan {
+    background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* Ağ Deseni */
+.izgara-arkaplan {
+    background-size: 40px 40px;
+    background-image:
+        linear-gradient(to right, #E2E8F0 1px, transparent 1px),
+        linear-gradient(to bottom, #E2E8F0 1px, transparent 1px);
+}
+
+/* Yavaş Nabız Animasyonu */
+.animasyon-nabiz-yavas {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Özel Checkbox (Kural Sayfası için) */
+.cam-panel {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+}
+
+.anahtar-kutusu:checked {
+    right: 0;
+    border-color: #00E676; /* Durum Başarılı Renk */
+}
+.anahtar-kutusu:checked + .anahtar-etiketi {
+    background-color: #00E676;
+}
+
+/* Minimalist yanıp sönen kursör (Terminal hissi için) */
+.yanip-sonen-kursor {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}

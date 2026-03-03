@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sistem Girişi - Black Barrier</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="varliklar/js/tailwind_ayar.js"></script>
+    <link rel="stylesheet" href="varliklar/css/stil.css">
+</head>
+
+<body
+    class="bg-arkaplan-acik text-birincil font-ekran h-screen flex items-center justify-center overflow-hidden relative noktali-arkaplan">
+
+    <!-- Dinamik Arka Plan Süslemeleri -->
+    <div class="absolute inset-0 z-0 opacity-20 pointer-events-none flex justify-between">
+        <div class="h-full w-px bg-gradient-to-b from-transparent via-birincil to-transparent md:ml-[10%]"></div>
+        <div class="h-full w-px bg-gradient-to-b from-transparent via-birincil to-transparent md:ml-[50%] opacity-50">
+        </div>
+        <div class="h-full w-px bg-gradient-to-b from-transparent via-birincil to-transparent md:mr-[10%]"></div>
+    </div>
+    <div
+        class="absolute inset-0 bg-gradient-to-tr from-transparent via-birincil/5 to-transparent pointer-events-none z-0">
+    </div>
+
+    <!-- Giriş Konteyneri -->
+    <div class="bg-yuzey w-[450px] border-l-4 border-birincil shadow-2xl z-10 mx-4 flex flex-col pt-2 relative">
+        <div
+            class="absolute -top-6 -right-6 text-[150px] font-bold text-slate-100 select-none opacity-50 font-kod tracking-tighter mix-blend-multiply pointer-events-none">
+            BB</div>
+
+        <!-- Üst Başlık (Fener) -->
+        <div class="px-8 pb-4 pt-8 border-b-2 border-slate-200 bg-yuzey-vurgu z-10">
+            <div class="flex items-center gap-4">
+                <div
+                    class="bg-birincil text-white flex items-center justify-center font-bold font-kod text-2xl size-14 border border-kenarlik-kalin shadow-sm">
+                    BB</div>
+                <div class="flex flex-col">
+                    <h1 class="text-slate-900 text-2xl font-black leading-none tracking-tighter uppercase">Black Barrier
+                    </h1>
+                    <p class="text-slate-500 text-xs font-kod mt-1 tracking-widest">SİSTEM YETKİLENDİRME</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 mt-6">
+                <span
+                    class="size-2 bg-durum-uyari rounded-full animate-ping opacity-75 shadow-parlama-uyari absolute"></span>
+                <span class="size-2 bg-durum-uyari rounded-full relative z-10 shadow-parlama-uyari"></span>
+                <span class="text-[10px] font-kod font-bold text-slate-600 uppercase tracking-widest">AĞ GEÇİDİ
+                    KISITLANDI / GİRİŞ BEKLENİYOR</span>
+            </div>
+        </div>
+
+        <!-- Form Alanı -->
+        <form class="p-8 flex flex-col gap-6 z-10 bg-white" action="kontrol_paneli.html" method="get">
+
+            <div class="flex flex-col gap-2">
+                <label
+                    class="text-[11px] font-kod font-bold text-slate-500 uppercase tracking-widest flex justify-between">
+                    <span>Kullanıcı Adı</span>
+                    <span class="material-symbols-outlined text-sm text-slate-300">person</span>
+                </label>
+                <div class="relative">
+                    <input
+                        class="w-full px-4 py-3 bg-slate-50 border-2 border-slate-300 rounded-none focus:border-birincil focus:bg-white focus:outline-none font-kod text-sm font-bold text-slate-800 transition-colors uppercase placeholder-slate-400"
+                        placeholder="YÖNETİCİ" required="" type="text" autocomplete="username" />
+                    <div
+                        class="absolute bottom-0 left-0 h-0.5 w-0 bg-birincil transition-all duration-300 peer-focus:w-full">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 relative">
+                <label
+                    class="text-[11px] font-kod font-bold text-slate-500 uppercase tracking-widest flex justify-between">
+                    <span>Erişim Parolası</span>
+                    <span class="material-symbols-outlined text-sm text-slate-300">lock</span>
+                </label>
+                <div class="relative">
+                    <input
+                        class="w-full px-4 py-3 bg-slate-50 border-2 border-slate-300 rounded-none focus:border-birincil focus:bg-white focus:outline-none font-kod text-sm font-bold tracking-[0.2em] text-slate-800 transition-colors placeholder-slate-400"
+                        placeholder="••••••••" required="" type="password" autocomplete="current-password" />
+                    <button
+                        class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-birincil focus:outline-none transition-colors"
+                        type="button" tabindex="-1">
+                        <span class="material-symbols-outlined text-[18px]">visibility_off</span>
+                    </button>
+                    <div
+                        class="absolute bottom-0 left-0 h-0.5 w-0 bg-birincil transition-all duration-300 peer-focus:w-full">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button
+                    class="w-full h-12 bg-birincil hover:bg-birincil-acik text-white font-bold uppercase tracking-widest text-sm transition-all focus:outline-none focus:ring-4 focus:ring-birincil/20 shadow-sm active:translate-y-px flex items-center justify-center gap-2"
+                    type="submit">
+                    GÜVENLİ GİRİŞ YAP
+                    <span class="material-symbols-outlined text-lg">login</span>
+                </button>
+            </div>
+
+            <p
+                class="text-center text-[10px] font-kod font-bold text-slate-400 uppercase tracking-widest mt-2 hover:text-birincil transition-colors cursor-pointer select-none">
+                YAPILANDIRMA KURTARMA
+            </p>
+        </form>
+
+        <!-- Alt Bilgi / Sürüm -->
+        <div
+            class="border-t border-slate-200 bg-slate-50 p-4 shrink-0 flex items-center justify-between text-slate-500 text-[10px] font-kod font-bold uppercase tracking-widest z-10 w-full">
+            <span>Core version 1.0</span>
+            <span class="text-slate-400">Lisans: MIT</span>
+        </div>
+    </div>
+
+</body>
+
+</html>
