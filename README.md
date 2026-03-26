@@ -1,5 +1,5 @@
 # BlackBarrier-Firewall
-## ⚠️ Önemli Uyarı (Disclaimer)
+## ⚠️ Önemli Uyarı
 
 Bu yazılım, bir akademik dönem projesi kapsamında eğitim ve araştırma amacıyla geliştirilmektedir. Sistem şu an aktif geliştirme aşamasındadır; üretim ortamlarında, kurumsal ağlarda veya kritik altyapılarda kullanıma yönelik profesyonel ve kararlı bir ürün değildir.
 
