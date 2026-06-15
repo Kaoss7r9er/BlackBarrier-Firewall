@@ -1,0 +1,345 @@
+/* ═══════════════════════════════════════════
+   Black Barrier — Modern Stil Dosyası
+   ═══════════════════════════════════════════ */
+
+/* ── Google Inter Font ──────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Tema Değişkenleri (Tema Rengi ayarından canlı güncellenir) ── */
+:root {
+    --bb-birincil-rgb:       37 99 235;   /* Blue 600 — varsayılan ana renk */
+    --bb-birincil-acik-rgb:  59 130 246;  /* Blue 500 */
+    --bb-birincil-koyu-rgb:  29 78 216;   /* Blue 700 */
+    --bb-birincil-soluk-rgb: 239 246 255; /* Blue 50  */
+}
+
+/* ── Hareketleri Azalt (erişilebilirlik tercihi) ── */
+html.hareket-azalt *,
+html.hareket-azalt *::before,
+html.hareket-azalt *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+}
+
+/* ── Genel Sıfırlama ───────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ──────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* ── Arka Plan Desenleri ────────────────── */
+.noktali-arkaplan {
+    background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+.izgara-arkaplan {
+    background-size: 40px 40px;
+    background-image:
+        linear-gradient(to right, #F1F5F9 1px, transparent 1px),
+        linear-gradient(to bottom, #F1F5F9 1px, transparent 1px);
+}
+
+/* ── Animasyonlar ───────────────────────── */
+.animasyon-nabiz-yavas {
+    animation: nabiz 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes nabiz {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.yanip-sonen-kursor {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* ── Cam Panel (Glassmorphism) ──────────── */
+.cam-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Toggle Switch ──────────────────────── */
+.anahtar-kutusu:checked {
+    right: 0;
+    border-color: #10B981;
+}
+.anahtar-kutusu:checked + .anahtar-etiketi {
+    background-color: #10B981;
+}
+
+/* ══════════════════════════════════════════
+   SIDEBAR — Sürüklenebilir & Responsive
+   ══════════════════════════════════════════ */
+
+/* Sidebar konteyner */
+#sidebar {
+    width: var(--sidebar-width, 260px);
+    min-width: 60px;
+    max-width: 400px;
+    transition: width 0.2s ease;
+    position: relative;
+    z-index: 30;
+}
+
+/* Daraltılmış sidebar */
+#sidebar.collapsed {
+    width: 60px !important;
+}
+#sidebar.collapsed .sidebar-metin {
+    display: none;
+}
+#sidebar.collapsed .sidebar-baslik {
+    display: none;
+}
+#sidebar.collapsed .sidebar-alt {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+#sidebar.collapsed .sidebar-link {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+#sidebar.collapsed .sidebar-link span.material-symbols-outlined {
+    margin: 0 auto;
+}
+
+/* Sidebar resize tutamacı */
+.sidebar-resize-handle {
+    position: absolute;
+    top: 0;
+    right: -3px;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    background: transparent;
+    z-index: 40;
+    transition: background 0.2s;
+}
+.sidebar-resize-handle:hover,
+.sidebar-resize-handle.active {
+    background: #3B82F6;
+    border-radius: 4px;
+}
+
+/* Mobil overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 25;
+}
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* ── Responsive ─────────────────────────── */
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px !important;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: none;
+    }
+    #sidebar.mobil-acik {
+        transform: translateX(0);
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+    .sidebar-resize-handle {
+        display: none;
+    }
+    #sag-panel {
+        display: none !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .hamburger-btn {
+        display: none !important;
+    }
+    .sidebar-overlay {
+        display: none !important;
+    }
+}
+
+/* ── Geçiş Efektleri ───────────────────── */
+.sayfa-gecis {
+    animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Kart Hover ─────────────────────────── */
+.kart-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.kart-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -3px rgba(0,0,0,0.08);
+}
+
+/* ── Modal Giriş ────────────────────────── */
+.modal-giris {
+    animation: modalGiris 0.25s ease-out;
+}
+@keyframes modalGiris {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ── Yumuşak Backdrop + Merkezi Modal ───────────────────────
+   Kural ekleme modal'ı için yavaş kararma + blur. Açıldığında
+   .acik class'ı eklenir → fade-in + blur, kart yumuşak büyür.
+   Kapatıldığında class kaldırılır → ters geçiş. */
+.modal-backdrop {
+    background: rgba(15, 23, 42, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    transition: background-color 0.35s ease, backdrop-filter 0.35s ease,
+                opacity 0.25s ease, visibility 0.25s ease;
+}
+.modal-backdrop.acik {
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+.modal-icerik {
+    transform: scale(0.96) translateY(8px);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+.modal-backdrop.acik .modal-icerik {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+/* ── Input Field Utility ────────────────── */
+.input-field {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 0.5rem;
+    font-size: 0.8125rem;
+    color: #0F172A;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input-field:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+.input-field::placeholder {
+    color: #94A3B8;
+}
+
+/* ── Modal Sekmeler ─────────────────────── */
+.modal-tab {
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+.modal-tab.aktif {
+    color: #2563EB;
+    border-color: #2563EB;
+}
+.modal-tab:not(.aktif):hover {
+    color: #0F172A;
+}
+
+/* ── Hamburger Dropdown ─────────────────── */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    min-width: 160px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px -3px rgba(0,0,0,0.08);
+    z-index: 50;
+    padding: 0.25rem 0;
+    animation: dropdownGiris 0.15s ease-out;
+}
+.dropdown-menu.aktif {
+    display: block;
+}
+.dropdown-menu button,
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    color: #64748B;
+    transition: background-color 0.1s, color 0.1s;
+    text-decoration: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+.dropdown-menu button:hover,
+.dropdown-menu a:hover {
+    background-color: #F1F5F9;
+    color: #0F172A;
+}
+.dropdown-menu .tehlikeli:hover {
+    background-color: #FEF2F2;
+    color: #EF4444;
+}
+@keyframes dropdownGiris {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive Tablo ───────────────────── */
+@media (max-width: 640px) {
+    .min-w-\[700px\],
+    .min-w-\[650px\],
+    .min-w-\[600px\],
+    .min-w-\[500px\] {
+        min-width: 100% !important;
+    }
+}

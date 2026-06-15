@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Black Barrier - Kontrol Paneli</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+    <!-- tailwind_ayar.js Tailwind CDN'den ÖNCE çalışmalı ki theme.extend uygulansın → defer YOK -->
+    <script src="varliklar/js/tailwind_ayar.js"></script>
+    <!-- tema.js: kayıtlı tema rengi/hareket tercihini sayfa boyanmadan uygular → defer YOK -->
+    <script src="varliklar/js/tema.js"></script>
+    <link rel="stylesheet" href="varliklar/css/stil.css">
+    <!-- Aşağıdaki script'ler DOM'a bağımlı; defer ile parse engellemeden sırayla yüklenir -->
+    <script defer src="varliklar/js/oturum.js"></script>
+    <script defer src="varliklar/js/arayuz.js"></script>
+    <script defer src="varliklar/js/app.js"></script>
+    <script defer src="varliklar/js/kullanicilar.js"></script>
+    <script defer src="varliklar/js/sayfalar/sistem_loglari_sekme.js"></script>
+    <script defer src="varliklar/js/sayfalar/ayarlar.js"></script>
+    <script defer src="varliklar/js/sayfalar/kurallar.js"></script>
+    <script defer src="varliklar/js/sayfalar/yonlendirme.js"></script>
+    <script defer src="varliklar/js/sayfalar/dhcp.js"></script>
+    <script defer src="varliklar/js/sayfalar/cihazlar.js"></script>
+    <script defer src="varliklar/js/sayfalar/trafik.js"></script>
+</head>
+
+<body class="bg-arkaplan-acik h-screen font-ekran text-metin-birincil overflow-hidden flex flex-col">
+
+    <!-- ═══════════════════════════════════
+         ÜST BAR (HEADER)
+         ═══════════════════════════════════ -->
+    <header class="h-14 bg-white border-b border-kenarlik flex items-center justify-between px-4 md:px-6 z-20 relative shadow-yumusak">
+        <div class="flex items-center gap-3">
+            <!-- Hamburger (Mobil) -->
+            <button id="btnHamburger" class="hamburger-btn p-2 rounded-lg hover:bg-slate-100 text-metin-ikincil transition-colors">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <!-- Logo -->
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 bg-birincil rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-yumusak">BB</div>
+                <div class="flex flex-col">
+                    <h1 class="text-sm font-bold text-metin-birincil leading-none">Black Barrier</h1>
+                    <span class="text-2xs text-metin-ucuncul font-medium">Güvenlik Duvarı Yönetimi</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <!-- Profil (Ayarlara yalnızca buradan erişilir) -->
+            <div class="relative">
+                <button id="profilButonu" type="button" class="w-9 h-9 bg-birincil/10 rounded-full flex items-center justify-center text-birincil font-semibold text-xs cursor-pointer hover:bg-birincil/20 transition-colors border border-birincil/30 focus:outline-none focus:ring-2 focus:ring-birincil/40" title="Profil ve Ayarlar">
+                    <span class="profil-bh text-xs">BB</span>
+                </button>
+                <!-- Profil Menüsü -->
+                <div id="profilMenusu" class="hidden absolute right-0 mt-2 w-60 bg-white border border-kenarlik rounded-xl shadow-buyuk z-50 overflow-hidden">
+                    <div class="p-4 bg-slate-50 border-b border-kenarlik flex items-center gap-3">
+                        <div class="w-10 h-10 bg-birincil rounded-full flex items-center justify-center text-white font-bold text-sm profil-bh-buyuk shrink-0">BB</div>
+                        <div class="flex flex-col min-w-0">
+                            <span class="text-sm font-semibold text-metin-birincil truncate profil-isim">Yükleniyor...</span>
+                            <span class="text-2xs text-metin-ucuncul truncate profil-kadi"></span>
+                        </div>
+                    </div>
+                    <div class="px-4 py-2 border-b border-kenarlik">
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-birincil/10 text-birincil text-2xs font-semibold rounded-full">
+                            <span class="material-symbols-outlined text-sm">verified_user</span>
+                            <span class="profil-rol">...</span>
+                        </span>
+                    </div>
+                    <div class="p-1.5">
+                        <a href="#ayarlar" class="flex items-center gap-2.5 px-3 py-2 text-sm text-metin-ikincil hover:bg-slate-50 hover:text-birincil transition-colors rounded-lg">
+                            <span class="material-symbols-outlined text-lg">settings</span>
+                            Sistem Ayarları
+                        </a>
+                        <a href="#kullanici_yonetimi" class="profil-admin-only flex items-center gap-2.5 px-3 py-2 text-sm text-metin-ikincil hover:bg-slate-50 hover:text-birincil transition-colors rounded-lg">
+                            <span class="material-symbols-outlined text-lg">admin_panel_settings</span>
+                            Kullanıcı Yönetimi
+                        </a>
+                    </div>
+                    <div class="p-1.5 border-t border-kenarlik">
+                        <a href="#" data-cikis class="cikis-btn flex items-center gap-2.5 px-3 py-2 text-sm text-durum-kritik hover:bg-red-50 transition-colors rounded-lg">
+                            <span class="material-symbols-outlined text-lg">logout</span>
+                            Çıkış Yap
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobil sidebar overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="flex flex-1 overflow-hidden min-h-0">
+
+        <!-- ═══════════════════════════════
+             SOL MENÜ (SIDEBAR)
+             ═══════════════════════════════ -->
+        <div id="sidebar" class="bg-white border-r border-kenarlik flex flex-col">
+            <!-- Daraltma Butonu -->
+            <div class="p-3 flex justify-end">
+                <button id="btnSidebarDaralt" class="p-1.5 rounded-lg hover:bg-slate-100 text-metin-ucuncul hover:text-birincil transition-colors" title="Menüyü Daralt/Genişlet">
+                    <span class="material-symbols-outlined text-lg">menu_open</span>
+                </button>
+            </div>
+
+            <!-- Menü Linkleri -->
+            <nav class="flex-1 flex flex-col gap-0.5 px-3 overflow-y-auto">
+                <span class="sidebar-baslik text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider px-3 mb-2">Ana Menü</span>
+
+                <a class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all border border-transparent" href="#dashboard">
+                    <span class="material-symbols-outlined text-xl">dashboard</span>
+                    <span class="sidebar-metin font-medium">Kontrol Paneli</span>
+                </a>
+                <a class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all border border-transparent" href="#kurallar">
+                    <span class="material-symbols-outlined text-xl">shield</span>
+                    <span class="sidebar-metin font-medium">Güvenlik Kuralları</span>
+                </a>
+                <a class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all border border-transparent" href="#yonlendirme">
+                    <span class="material-symbols-outlined text-xl">route</span>
+                    <span class="sidebar-metin font-medium">Yönlendirme</span>
+                </a>
+                <a class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all border border-transparent" href="#dhcp">
+                    <span class="material-symbols-outlined text-xl">wifi_tethering</span>
+                    <span class="sidebar-metin font-medium">DHCP Sunucu</span>
+                </a>
+                <a class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all border border-transparent" href="#trafik">
+                    <span class="material-symbols-outlined text-xl">monitoring</span>
+                    <span class="sidebar-metin font-medium">Trafik Kayıtları</span>
+                </a>
+
+                <span class="sidebar-baslik text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider px-3 mt-4 mb-2">Yönetim</span>
+
+                <a class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all border border-transparent" href="#kullanici_yonetimi">
+                    <span class="material-symbols-outlined text-xl">group</span>
+                    <span class="sidebar-metin font-medium">Kullanıcılar</span>
+                </a>
+                <a class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all border border-transparent" href="#cihazlar">
+                    <span class="material-symbols-outlined text-xl">devices</span>
+                    <span class="sidebar-metin font-medium">Bağlı Cihazlar</span>
+                </a>
+                <a class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all border border-transparent" href="#sistem_loglari_sekme">
+                    <span class="material-symbols-outlined text-xl">history</span>
+                    <span class="sidebar-metin font-medium">Sistem Logları</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Alt Bölüm — Firewall Durumu -->
+            <div class="sidebar-alt px-4 py-4 border-t border-kenarlik">
+                <div class="flex items-center gap-2">
+                    <span id="firewallDurumIkon" class="size-2.5 bg-durum-basarili rounded-full animasyon-nabiz-yavas shadow-parlama-basarili"></span>
+                    <span id="firewallDurumMetin" class="sidebar-metin text-xs font-semibold text-metin-birincil">Güvenlik Duvarı Çevrimiçi</span>
+                </div>
+                <p class="sidebar-metin text-2xs text-metin-ucuncul mt-1">Sürüm 1.0</p>
+            </div>
+
+            <!-- Resize Handle -->
+            <div id="sidebarResizeHandle" class="sidebar-resize-handle"></div>
+        </div>
+
+        <!-- ═══════════════════════════════
+             ANA İÇERİK ALANI
+             ═══════════════════════════════ -->
+        <main id="spa-main" class="flex-1 flex flex-col min-h-0 h-full overflow-hidden bg-arkaplan-acik relative">
+  <!-- GORUNUM: dashboard -->
+  <div id="gorunum-dashboard" class="gorunum-alani flex flex-col h-full w-full overflow-y-auto noktali-arkaplan sayfa-gecis">
+<!-- Üst Metrik Kartları -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 p-6">
+
+                <!-- Aktif Oturumlar -->
+                <div class="bg-white rounded-xl border border-kenarlik p-5 flex flex-col justify-between h-32 shadow-yumusak kart-hover cursor-default">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-semibold text-metin-ikincil">Aktif Oturumlar</span>
+                        <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-birincil text-lg">people_alt</span>
+                        </div>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <span class="text-3xl font-bold text-metin-birincil">—</span>
+                    </div>
+                </div>
+
+                <!-- Düşen Paketler -->
+                <div class="bg-white rounded-xl border border-kenarlik p-5 flex flex-col justify-between h-32 shadow-yumusak kart-hover cursor-default">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-semibold text-metin-ikincil">Düşen Paketler</span>
+                        <div class="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-durum-kritik text-lg">block</span>
+                        </div>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <span class="text-3xl font-bold text-metin-birincil">—</span>
+                    </div>
+                </div>
+
+                <!-- CPU Yükü -->
+                <div class="bg-white rounded-xl border border-kenarlik p-5 flex flex-col justify-between h-32 shadow-yumusak kart-hover cursor-default">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-semibold text-metin-ikincil">CPU Yükü</span>
+                        <div class="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-veri-cizgisi text-lg">memory</span>
+                        </div>
+                    </div>
+                    <div class="flex items-end justify-between w-full gap-4">
+                        <span class="text-3xl font-bold text-metin-birincil">—</span>
+                        <div class="flex-1 h-2.5 bg-slate-100 rounded-full relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 bg-veri-cizgisi rounded-full w-[0%] transition-all"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ortalama Gecikme -->
+                <div class="bg-white rounded-xl border border-kenarlik p-5 flex flex-col justify-between h-32 shadow-yumusak kart-hover cursor-default">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-semibold text-metin-ikincil">Ort. Gecikme</span>
+                        <div class="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-durum-uyari text-lg">speed</span>
+                        </div>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <span class="text-3xl font-bold text-metin-birincil">—</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Ana Grafik Alanı -->
+            <div class="flex-1 px-6 pb-6 min-h-[400px] flex flex-col">
+                <div class="bg-white rounded-xl border border-kenarlik h-full flex flex-col relative overflow-hidden shadow-yumusak">
+                    <div class="h-12 border-b border-kenarlik flex items-center justify-between px-4">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-birincil text-lg">ssid_chart</span>
+                            <h3 class="font-semibold text-sm text-metin-birincil">Bant Genişliği İzleme</h3>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button class="px-3 py-1 text-xs font-medium bg-slate-50 border border-kenarlik hover:border-birincil text-metin-ikincil hover:text-birincil transition-colors rounded-md">1 Saat</button>
+                            <button class="px-3 py-1 text-xs font-medium bg-birincil text-white rounded-md shadow-yumusak">24 Saat</button>
+                            <button class="px-3 py-1 text-xs font-medium bg-slate-50 border border-kenarlik hover:border-birincil text-metin-ikincil hover:text-birincil transition-colors rounded-md">7 Gün</button>
+                        </div>
+                    </div>
+                    <div class="flex-1 relative p-4 izgara-arkaplan flex items-center justify-center">
+                        <span class="text-metin-ucuncul text-sm">Grafik verisi yok</span>
+                    </div>
+                </div>
+            </div>
+  </div>
+
+  <!-- GORUNUM: kurallar -->
+  <div id="gorunum-kurallar" class="gorunum-alani hidden flex-col h-full w-full sayfa-gecis">
+    <div class="px-4 md:px-6 py-4 border-b border-kenarlik bg-white flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+            <h2 class="text-lg md:text-xl font-bold text-metin-birincil">Güvenlik Kuralları</h2>
+            <p class="text-xs md:text-sm text-metin-ucuncul mt-0.5">Erişim kontrol listesini (ACL) yönetin — OPNsense uyumlu</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <!-- Firewall master durum göstergesi (yalnızca bilgi — kapatma kaldırıldı) -->
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-kenarlik rounded-lg" title="Güvenlik duvarının çekirdek (nftables) durumu">
+                <span id="fwDurumNokta" class="size-2.5 rounded-full bg-slate-300"></span>
+                <span id="fwDurumMetin" class="text-xs font-medium text-metin-ikincil">Durum…</span>
+            </div>
+            <button id="btnKuralDisaAktar" class="px-3 py-2 bg-white border border-kenarlik hover:border-birincil text-metin-ikincil text-xs font-medium rounded-lg flex items-center gap-1.5 transition-colors">
+                <span class="material-symbols-outlined text-sm">download</span> Dışa Aktar
+            </button>
+            <button id="btnKuralEkle" class="px-4 py-2 bg-birincil hover:bg-birincil-koyu text-white text-xs md:text-sm font-semibold rounded-lg flex items-center gap-1.5 transition-colors shadow-yumusak">
+                <span class="material-symbols-outlined text-base">add</span> Yeni Kural
+            </button>
+        </div>
+    </div>
+    <div class="px-4 md:px-6 py-2 bg-slate-50 border-b border-kenarlik flex flex-wrap items-center gap-3">
+        <div class="relative flex-1 min-w-[200px] max-w-md">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-metin-ucuncul text-base">search</span>
+            <input id="kuralAra" class="w-full pl-9 pr-3 py-1.5 bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none text-xs" placeholder="Kural adı, IP, port, domain veya açıklama ara..." type="text" />
+        </div>
+        <div class="flex gap-2 flex-wrap items-center">
+            <select id="kuralFiltreYon" class="text-xs bg-white border border-kenarlik rounded-lg px-2 py-1.5 focus:border-birincil outline-none">
+                <option value="">Tüm Yönler</option>
+                <option value="her">✶ Her yön</option>
+                <option value="giris">↓ Gelen</option>
+                <option value="cikis">↑ Giden</option>
+                <option value="ilet">↔ İlet</option>
+            </select>
+            <select id="kuralFiltreEylem" class="text-xs bg-white border border-kenarlik rounded-lg px-2 py-1.5 focus:border-birincil outline-none">
+                <option value="">Tüm Eylemler</option>
+                <option value="izin_ver">İzin Ver</option>
+                <option value="engelle">Engelle</option>
+                <option value="reddet">Reddet</option>
+            </select>
+            <select id="kuralFiltreDurum" class="text-xs bg-white border border-kenarlik rounded-lg px-2 py-1.5 focus:border-birincil outline-none">
+                <option value="">Aktif + Pasif</option>
+                <option value="aktif">Sadece Aktif</option>
+                <option value="pasif">Sadece Pasif</option>
+            </select>
+            <span id="kuralFiltreSayac" class="text-2xs text-metin-ucuncul font-kod"></span>
+        </div>
+    </div>
+    <div class="flex-1 overflow-auto p-4 md:p-6">
+        <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-x-auto">
+            <table class="w-full text-left text-xs md:text-sm min-w-[700px]">
+                <thead class="bg-slate-50 border-b border-kenarlik"><tr>
+                    <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil w-8">#</th>
+                    <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Durum</th>
+                    <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Eylem</th>
+                    <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Yön</th>
+                    <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Kaynak</th>
+                    <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Hedef</th>
+                    <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Protokol</th>
+                    <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Zaman</th>
+                    <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Kural Adı</th>
+                    <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil text-right w-10"></th>
+                </tr></thead>
+                <tbody id="tblKurallarGovde" class="divide-y divide-slate-100"></tbody>
+            </table>
+            <div id="kurallarBos" class="p-8 text-center text-metin-ucuncul text-sm">Henüz kural eklenmemiş</div>
+        </div>
+    </div>
+
+    <!-- Kural Ekleme Modal (Merkezi, Yumuşak Blur) -->
+    <div id="modalKural"
+         class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4 invisible opacity-0">
+        <div class="bg-white w-full max-w-xl rounded-2xl shadow-buyuk border border-kenarlik modal-icerik max-h-[90vh] flex flex-col">
+            <!-- Başlık -->
+            <div class="px-6 py-4 border-b border-kenarlik flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 bg-birincil/10 text-birincil rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-xl">shield_lock</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-metin-birincil">Yeni Güvenlik Kuralı</h3>
+                        <p class="text-2xs text-metin-ucuncul">nftables üzerinde gerçek zamanlı uygulanır</p>
+                    </div>
+                </div>
+                <button id="btnKuralModalKapat" type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-metin-ucuncul hover:text-durum-kritik transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <!-- İçerik (scroll) -->
+            <form id="formKural" class="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+                <!-- ADIM 1: Ne yapmak istiyorsun? -->
+                <div class="space-y-2">
+                    <p class="text-sm font-semibold text-metin-birincil flex items-center gap-2">
+                        <span class="w-5 h-5 bg-birincil text-white text-2xs rounded-full flex items-center justify-center font-bold">1</span>
+                        Ne yapmak istiyorsun?
+                    </p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex flex-col items-center gap-1 px-3 py-3 bg-slate-50 border-2 border-kenarlik rounded-xl cursor-pointer transition-colors has-[:checked]:border-durum-kritik has-[:checked]:bg-red-50">
+                            <input type="radio" name="eylem" value="engelle" checked class="sr-only">
+                            <span class="material-symbols-outlined text-2xl text-durum-kritik">block</span>
+                            <span class="text-sm font-semibold text-metin-birincil">Engelle</span>
+                            <span class="text-2xs text-metin-ucuncul text-center">Erişimi kes</span>
+                        </label>
+                        <label class="flex flex-col items-center gap-1 px-3 py-3 bg-slate-50 border-2 border-kenarlik rounded-xl cursor-pointer transition-colors has-[:checked]:border-durum-basarili has-[:checked]:bg-green-50">
+                            <input type="radio" name="eylem" value="izin_ver" class="sr-only">
+                            <span class="material-symbols-outlined text-2xl text-durum-basarili">check_circle</span>
+                            <span class="text-sm font-semibold text-metin-birincil">İzin Ver</span>
+                            <span class="text-2xs text-metin-ucuncul text-center">Erişime izin ver</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ADIM 2: Neyi? -->
+                <div class="space-y-2">
+                    <p class="text-sm font-semibold text-metin-birincil flex items-center gap-2">
+                        <span class="w-5 h-5 bg-birincil text-white text-2xs rounded-full flex items-center justify-center font-bold">2</span>
+                        Neyi?
+                    </p>
+                    <div class="flex gap-2">
+                        <label class="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-50 border border-kenarlik rounded-lg cursor-pointer has-[:checked]:border-birincil has-[:checked]:bg-birincil/5">
+                            <input type="radio" name="hedefTip" value="domain" checked class="w-3.5 h-3.5 text-birincil">
+                            <span class="material-symbols-outlined text-base text-metin-ikincil">language</span>
+                            <span class="text-xs font-medium text-metin-birincil">Web sitesi</span>
+                        </label>
+                        <label class="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-50 border border-kenarlik rounded-lg cursor-pointer has-[:checked]:border-birincil has-[:checked]:bg-birincil/5">
+                            <input type="radio" name="hedefTip" value="ip" class="w-3.5 h-3.5 text-birincil">
+                            <span class="material-symbols-outlined text-base text-metin-ikincil">dns</span>
+                            <span class="text-xs font-medium text-metin-birincil">IP adresi / cihaz</span>
+                        </label>
+                    </div>
+                    <input id="kuralHedefAdres" class="input-field font-kod" placeholder="örn. youtube.com" type="text" />
+                    <p id="kuralHedefIpucu" class="text-2xs text-metin-ucuncul">Engellemek istediğin web sitesinin adını yaz — alt alan adları (www, m. gibi) da kapsanır.</p>
+                </div>
+
+                <!-- ADIM 3: Kural adı -->
+                <div class="space-y-2">
+                    <p class="text-sm font-semibold text-metin-birincil flex items-center gap-2">
+                        <span class="w-5 h-5 bg-birincil text-white text-2xs rounded-full flex items-center justify-center font-bold">3</span>
+                        Kurala bir ad ver
+                    </p>
+                    <input id="kuralAdi" required maxlength="100" class="input-field" placeholder="örn. YouTube engeli" type="text" />
+                </div>
+
+                <!-- Gelişmiş ayarlar (yeni başlayanlar için gizli) -->
+                <details class="rounded-lg border border-kenarlik">
+                    <summary class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil cursor-pointer select-none flex items-center gap-1.5 hover:bg-slate-50 rounded-lg">
+                        <span class="material-symbols-outlined text-base">tune</span>
+                        Gelişmiş ayarlar
+                        <span class="text-metin-ucuncul font-normal">(çoğu kullanıcı için gerekmez)</span>
+                    </summary>
+                    <div class="px-3 py-3 space-y-4 border-t border-kenarlik">
+                        <!-- Açıklama -->
+                        <div class="flex flex-col gap-1.5">
+                            <label for="kuralAciklama" class="text-xs font-medium text-metin-ikincil">Açıklama</label>
+                            <textarea id="kuralAciklama" rows="2" maxlength="500" class="input-field resize-none" placeholder="Bu kural ne için eklendi?"></textarea>
+                        </div>
+                        <!-- Yön + Protokol -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex flex-col gap-1.5">
+                                <label for="kuralYon" class="text-xs font-medium text-metin-ikincil">Yön</label>
+                                <select id="kuralYon" class="input-field">
+                                    <option value="her" selected>✶ Her yön (önerilen)</option>
+                                    <option value="giris">↓ Gelen</option>
+                                    <option value="cikis">↑ Giden</option>
+                                    <option value="ilet">↔ İlet</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <label for="kuralProtokol" class="text-xs font-medium text-metin-ikincil">Protokol</label>
+                                <select id="kuralProtokol" class="input-field">
+                                    <option value="herhangi" selected>Herhangi (tümü)</option>
+                                    <option value="tcp">TCP</option>
+                                    <option value="udp">UDP</option>
+                                    <option value="icmp">ICMP</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Kaynak IP + Hedef Port -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex flex-col gap-1.5">
+                                <label for="kuralKaynakIP" class="text-xs font-medium text-metin-ikincil">Kaynak IP <span class="text-metin-ucuncul">(boş=tümü)</span></label>
+                                <input id="kuralKaynakIP" class="input-field font-kod" placeholder="192.168.1.0/24" type="text" />
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <label for="kuralHedefPort" class="text-xs font-medium text-metin-ikincil">Hedef port <span class="text-metin-ucuncul">(boş=tümü)</span></label>
+                                <input id="kuralHedefPort" class="input-field font-kod" placeholder="80" type="text" />
+                            </div>
+                        </div>
+                        <!-- Zamanlama -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-medium text-metin-ikincil">Zamanlama</label>
+                            <div class="flex gap-2">
+                                <label class="flex-1 flex items-center gap-2 px-3 py-2 bg-white border border-kenarlik rounded-lg cursor-pointer has-[:checked]:border-birincil has-[:checked]:bg-birincil/5">
+                                    <input type="radio" name="zamanlamaTipi" value="surekli" checked class="w-3.5 h-3.5 text-birincil">
+                                    <span class="text-xs font-medium text-metin-birincil">Sürekli</span>
+                                </label>
+                                <label class="flex-1 flex items-center gap-2 px-3 py-2 bg-white border border-kenarlik rounded-lg cursor-pointer has-[:checked]:border-birincil has-[:checked]:bg-birincil/5">
+                                    <input type="radio" name="zamanlamaTipi" value="aralik" class="w-3.5 h-3.5 text-birincil">
+                                    <span class="text-xs font-medium text-metin-birincil">Saat aralığı</span>
+                                </label>
+                            </div>
+                            <div id="kuralSaatAralik" class="grid grid-cols-2 gap-3 hidden">
+                                <div class="flex flex-col gap-1.5">
+                                    <label for="kuralZamanBaslangic" class="text-xs font-medium text-metin-ikincil">Başlangıç</label>
+                                    <input id="kuralZamanBaslangic" class="input-field font-kod" type="time" />
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label for="kuralZamanBitis" class="text-xs font-medium text-metin-ikincil">Bitiş</label>
+                                    <input id="kuralZamanBitis" class="input-field font-kod" type="time" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Öncelik + Başlangıç durumu -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex flex-col gap-1.5">
+                                <label for="kuralOncelik" class="text-xs font-medium text-metin-ikincil">Öncelik <span class="text-metin-ucuncul">(1-999)</span></label>
+                                <input id="kuralOncelik" class="input-field font-kod" placeholder="100" type="number" min="1" max="999" />
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-xs font-medium text-metin-ikincil">Başlangıç durumu</label>
+                                <label class="flex items-center gap-2.5 px-3 py-2 bg-white border border-kenarlik rounded-lg cursor-pointer h-[38px]">
+                                    <input id="kuralAktif" type="checkbox" checked class="sr-only peer">
+                                    <div class="w-9 h-5 bg-slate-300 peer-checked:bg-durum-basarili rounded-full relative transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-4"></div>
+                                    <span class="text-xs font-medium text-metin-birincil peer-checked:text-durum-basarili" id="kuralAktifEtiket">Aktif</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <div id="modalKuralHata" class="hidden p-3 bg-red-50 border border-red-200 text-durum-kritik text-xs font-medium rounded-lg"></div>
+            </form>
+
+            <!-- Aksiyon Butonları -->
+            <div class="px-6 py-3 border-t border-kenarlik bg-slate-50 flex gap-3 rounded-b-2xl">
+                <button id="btnKuralIptal" type="button" class="flex-1 py-2 border border-kenarlik hover:bg-white text-metin-ikincil font-medium text-sm rounded-lg transition-colors">İptal</button>
+                <button id="btnKuralKaydet" type="button" class="flex-1 py-2 bg-birincil hover:bg-birincil-koyu text-white font-medium text-sm rounded-lg transition-colors shadow-yumusak flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-base">save</span> Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- GORUNUM: yonlendirme -->
+  <div id="gorunum-yonlendirme" class="gorunum-alani hidden flex-col h-full w-full sayfa-gecis">
+    <div class="px-4 md:px-6 py-4 border-b border-kenarlik bg-white flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+            <h2 class="text-lg md:text-xl font-bold text-metin-birincil">Yönlendirme / NAT</h2>
+            <p class="text-xs text-metin-ucuncul mt-0.5">Port forward (DNAT), SNAT ve masquerade kurallarını yönetin</p>
+        </div>
+        <button id="btnYonlendirmeEkle" class="px-4 py-2 bg-birincil hover:bg-birincil-koyu text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors shadow-yumusak">
+            <span class="material-symbols-outlined text-sm">add</span> Yeni Kural
+        </button>
+    </div>
+    <div class="flex-1 overflow-auto p-4 md:p-6">
+        <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-x-auto">
+            <table class="w-full text-left text-xs md:text-sm min-w-[700px]">
+                <thead class="bg-slate-50 border-b border-kenarlik">
+                    <tr>
+                        <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">İsim</th>
+                        <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Tür</th>
+                        <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Protokol</th>
+                        <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">Dış</th>
+                        <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil">İç Hedef</th>
+                        <th class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil text-right">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody id="tblYonlendirmeGovde" class="divide-y divide-slate-100"></tbody>
+            </table>
+            <div id="yonlendirmeBos" class="p-6 text-center text-metin-ucuncul text-sm">Henüz kural eklenmemiş</div>
+        </div>
+    </div>
+  </div>
+  <!-- GORUNUM: dhcp -->
+  <div id="gorunum-dhcp" class="gorunum-alani hidden flex-col h-full w-full sayfa-gecis">
+    <div class="px-6 py-5 border-b border-kenarlik bg-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-xl font-bold text-metin-birincil">DHCP Sunucu</h2>
+            <p class="text-sm text-metin-ucuncul mt-1">IPv4 DHCP ayarlarını yapılandırın</p>
+        </div>
+        <div id="dhcpArayuzSekmeleri" class="flex gap-1.5 bg-slate-100 p-1 rounded-lg">
+            <button data-arayuz="LAN" class="dhcp-arayuz-btn px-4 py-1.5 bg-birincil text-white text-xs font-semibold rounded-md shadow-yumusak">LAN</button>
+            <button data-arayuz="OPT_VLAN_1" class="dhcp-arayuz-btn px-4 py-1.5 text-metin-ikincil text-xs font-medium hover:bg-white rounded-md transition-colors">OPT_VLAN_1</button>
+        </div>
+    </div>
+    <div class="flex-1 overflow-auto p-6 space-y-6">
+        <!-- Hizmet Ayarları -->
+        <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+            <div class="px-5 pt-4 pb-1">
+                <p class="text-xs text-metin-ucuncul">DHCP, ağa bağlanan cihazlara <b>otomatik IP adresi</b> dağıtır. Açtığında LAN'daki cihazlar (bilgisayar, telefon, yazıcı…) elle ayar yapmadan bağlanır.</p>
+            </div>
+            <div class="px-5 py-3 border-b border-kenarlik flex items-center gap-3">
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input id="dhcpAktif" type="checkbox" class="sr-only peer">
+                    <div class="w-9 h-5 bg-slate-200 peer-focus:ring-2 peer-focus:ring-birincil/20 rounded-full peer peer-checked:bg-durum-basarili transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full"></div>
+                </label>
+                <span class="text-sm font-medium text-metin-birincil"><span id="dhcpArayuzEtiket">LAN</span> arayüzünde DHCP'yi aç</span>
+            </div>
+            <form id="formDhcp" class="p-5 space-y-5">
+                <!-- Hangi ağ kartı -->
+                <div class="flex flex-col gap-1.5">
+                    <label for="dhcpInterfaceAdi" class="text-xs font-medium text-metin-ikincil">Hangi ağ kartı? <span class="text-durum-kritik">*</span></label>
+                    <input id="dhcpInterfaceAdi" class="w-full bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none font-kod" placeholder="enp0s8" type="text" />
+                    <p class="text-2xs text-metin-ucuncul">DHCP'nin çalışacağı gerçek ağ kartının adı (LAN). Kurulumda otomatik dolduruldu.</p>
+                </div>
+
+                <!-- Hızlı doldur yardımcısı -->
+                <div class="flex items-center gap-3 p-3 bg-birincil/5 border border-birincil/20 rounded-lg">
+                    <span class="material-symbols-outlined text-birincil">auto_fix_high</span>
+                    <p class="flex-1 text-2xs text-metin-ikincil">Aşağıdaki <b>Ağ Geçidi</b> alanına firewall'ın LAN IP'sini yaz (örn. 192.168.1.1), gerisini (alt ağ, maske, havuz, DNS) senin için dolduralım.</p>
+                    <button id="btnDhcpOtomatik" type="button" class="shrink-0 px-3 py-1.5 bg-white border border-birincil text-birincil text-xs font-semibold rounded-lg hover:bg-birincil/10 transition-colors">Otomatik doldur</button>
+                </div>
+
+                <!-- Ağ ayarları -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label for="dhcpAgGecidi" class="text-xs font-medium text-metin-ikincil">Ağ Geçidi <span class="text-metin-ucuncul">(genelde firewall'ın LAN IP'si)</span></label>
+                        <input id="dhcpAgGecidi" class="w-full bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none font-kod" placeholder="192.168.1.1" type="text" />
+                        <p class="text-2xs text-metin-ucuncul">Cihazların internete çıkış adresi.</p>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label for="dhcpDns" class="text-xs font-medium text-metin-ikincil">DNS Sunucusu</label>
+                        <input id="dhcpDns" class="w-full bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none" placeholder="192.168.1.1 veya 8.8.8.8" type="text" />
+                        <p class="text-2xs text-metin-ucuncul"><b>Firewall'ın IP'sini</b> yazarsan domain engelleme istemcilerde de çalışır.</p>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label for="dhcpAltAg" class="text-xs font-medium text-metin-ikincil">Alt Ağ (Subnet)</label>
+                        <input id="dhcpAltAg" class="w-full bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none font-kod" placeholder="192.168.1.0" type="text" />
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label for="dhcpAltAgMaskesi" class="text-xs font-medium text-metin-ikincil">Alt Ağ Maskesi</label>
+                        <input id="dhcpAltAgMaskesi" class="w-full bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none font-kod" placeholder="255.255.255.0" type="text" />
+                    </div>
+                </div>
+
+                <!-- IP havuzu -->
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-medium text-metin-ikincil">Dağıtılacak IP aralığı (havuz)</label>
+                    <div class="flex items-center gap-3">
+                        <input id="dhcpHavuzBaslangic" class="flex-1 bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none font-kod" placeholder="192.168.1.50" type="text" />
+                        <span class="text-metin-ucuncul">—</span>
+                        <input id="dhcpHavuzBitis" class="flex-1 bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none font-kod" placeholder="192.168.1.200" type="text" />
+                    </div>
+                    <p class="text-2xs text-metin-ucuncul">Cihazlara bu aralıktan IP verilir. Ağ geçidi ve sabit IP'lerle çakışmasın.</p>
+                </div>
+
+                <!-- Kira süresi -->
+                <div class="flex flex-col gap-1.5 md:w-1/2">
+                    <label for="dhcpKiraSuresi" class="text-xs font-medium text-metin-ikincil">Kira süresi <span class="text-metin-ucuncul">(verilen IP ne kadar geçerli)</span></label>
+                    <select id="dhcpKiraSuresi" class="w-full bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none">
+                        <option value="3600">1 saat</option>
+                        <option value="21600">6 saat</option>
+                        <option value="43200">12 saat</option>
+                        <option value="86400" selected>1 gün</option>
+                        <option value="604800">1 hafta</option>
+                    </select>
+                </div>
+            </form>
+            <div id="dhcpDurum" class="hidden px-5 py-2 mx-5 mb-3 text-xs font-medium rounded-lg"></div>
+            <div class="px-5 py-3 border-t border-kenarlik flex justify-end">
+                <button id="btnDhcpKaydet" class="px-5 py-2 bg-birincil hover:bg-birincil-koyu text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">save</span> Kaydet
+                </button>
+            </div>
+        </div>
+        <!-- Kiralamalar -->
+        <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+            <div class="px-5 py-3 border-b border-kenarlik flex justify-between items-center gap-3">
+                <div>
+                    <h3 class="text-sm font-semibold text-metin-birincil">Aktif Kiralamalar</h3>
+                    <p class="text-2xs text-metin-ucuncul">Bu liste, ağdaki cihazlar bu sunucudan IP aldıkça dolar — ayar kaydetmek liste eklemez.</p>
+                </div>
+                <button id="btnDhcpKiralamalariYenile" class="shrink-0 text-xs text-birincil hover:underline font-medium">Yenile</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left whitespace-nowrap min-w-[600px]">
+                    <thead class="bg-slate-50 border-b border-kenarlik">
+                        <tr>
+                            <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil">IP Adresi</th>
+                            <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil">MAC Adresi</th>
+                            <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil">Ana Makina Adı</th>
+                            <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil">Süre</th>
+                            <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil">Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblDhcpKiralamalariGovde" class="divide-y divide-slate-100 text-sm"></tbody>
+                </table>
+            </div>
+            <div id="dhcpKiralamalariBos" class="p-6 text-center text-metin-ucuncul text-sm">Kiralama kaydı bulunamadı</div>
+        </div>
+    </div>
+  </div>
+  <!-- GORUNUM: trafik -->
+  <div id="gorunum-trafik" class="gorunum-alani hidden flex-col h-full w-full sayfa-gecis">
+    <div class="px-4 md:px-6 py-3 border-b border-kenarlik bg-white flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <span id="trafikCanliIkon" class="size-2.5 bg-slate-300 rounded-full" title="Bağlantı bekleniyor"></span>
+            <h2 class="text-lg font-bold text-metin-birincil">Trafik Kayıtları</h2>
+            <span id="trafikDurumMetni" class="text-xs text-metin-ucuncul hidden md:inline">Bağlanıyor…</span>
+            <span class="text-2xs text-metin-ucuncul font-kod hidden lg:inline">·</span>
+            <span id="trafikSayac" class="text-2xs text-metin-ucuncul font-kod hidden lg:inline">0 paket</span>
+        </div>
+        <div class="flex gap-2">
+            <!-- Basit / Detaylı görünüm: teknik sütunları (Arayüz, Bayrak, TTL, Boyut) gizler/gösterir -->
+            <div class="flex items-center rounded-lg border border-kenarlik overflow-hidden text-xs font-medium">
+                <button id="btnGorunumBasit" type="button" class="px-3 py-1.5 bg-birincil text-white transition-colors">Basit</button>
+                <button id="btnGorunumDetayli" type="button" class="px-3 py-1.5 bg-white text-metin-ikincil hover:bg-slate-50 transition-colors">Detaylı</button>
+            </div>
+            <button id="btnEngellenenOzet" class="px-3 py-1.5 bg-white border border-kenarlik hover:border-durum-kritik hover:text-durum-kritik text-xs font-medium text-metin-ikincil rounded-lg flex items-center gap-1.5 transition-colors" title="Yasaklı hedeflere erişmeye çalışanların grafiği">
+                <span class="material-symbols-outlined text-sm">block</span> Engellenenler
+                <span id="btnEngellenenOk" class="material-symbols-outlined text-sm">expand_more</span>
+            </button>
+            <button id="btnTrafikDuraklat" class="px-3 py-1.5 bg-white border border-kenarlik hover:border-birincil text-xs font-medium text-metin-ikincil rounded-lg flex items-center gap-1.5 transition-colors">
+                <span class="material-symbols-outlined text-sm">pause</span> <span id="btnTrafikDuraklatMetin">Duraklat</span>
+            </button>
+            <button id="btnTrafikYenile" class="px-3 py-1.5 bg-white border border-kenarlik hover:border-birincil text-xs font-medium text-metin-ikincil rounded-lg flex items-center gap-1.5 transition-colors" title="Listeyi şimdi yenile">
+                <span class="material-symbols-outlined text-sm">refresh</span> Yenile
+            </button>
+            <button id="btnTrafikDisaAktar" class="px-3 py-1.5 bg-white border border-kenarlik hover:border-birincil text-xs font-medium text-metin-ikincil rounded-lg flex items-center gap-1.5 transition-colors" title="Mevcut (filtrelenmiş) trafiği .json olarak indir — Sistem Logları'nda içeri aktarılabilir">
+                <span class="material-symbols-outlined text-sm">download</span> Dışa Aktar
+            </button>
+        </div>
+    </div>
+
+    <!-- Engellenen erişim denemeleri (grafik + liste) — başlıktaki "Engellenenler" ile açılır -->
+    <div id="engellenenPanel" class="hidden shrink-0 border-b border-kenarlik bg-white px-4 md:px-6 py-3 max-h-[45vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-1.5">
+            <h3 class="text-sm font-semibold text-metin-birincil flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base text-durum-kritik">block</span>
+                Engellenen Erişim Denemeleri
+            </h3>
+            <span id="engellenenToplam" class="text-2xs text-metin-ucuncul"></span>
+        </div>
+        <p class="text-2xs text-metin-ucuncul mb-2">Yasaklı IP/domainlere erişmeye çalışan cihazlar (en çok deneyenler):</p>
+        <!-- Grafik: en çok deneyen kaynaklar (CSS çubukları) -->
+        <div id="engellenenGrafik" class="space-y-1.5"></div>
+        <!-- Detaylı liste (isteğe bağlı, aşağı kaydır) -->
+        <div class="mt-3 pt-2 border-t border-kenarlik">
+            <div class="text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider mb-1.5">Detaylı Liste — kaynak → engellenen hedef</div>
+            <div id="engellenenListe" class="space-y-0.5"></div>
+        </div>
+    </div>
+
+    <!-- Filtreler: sade üst çubuk + kategorize açılır panel -->
+    <div class="bg-slate-50 border-b border-kenarlik">
+        <!-- Kompakt çubuk (her zaman görünür) -->
+        <div class="px-4 md:px-6 py-2 flex flex-wrap items-center gap-2">
+            <div class="relative flex-1 min-w-[180px] max-w-sm">
+                <span class="absolute left-2.5 top-1/2 -translate-y-1/2 material-symbols-outlined text-metin-ucuncul text-base pointer-events-none">search</span>
+                <input id="filtreArama" class="w-full pl-8 pr-2 py-1.5 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none" placeholder="Ara: site, IP, port…" type="text" />
+            </div>
+            <select id="filtreEylem" class="px-2 py-1.5 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none">
+                <option value="">Tüm durumlar</option>
+                <option value="izin">✓ İzin verilenler</option>
+                <option value="engel">✕ Engellenenler</option>
+            </select>
+            <button id="btnFiltreAc" type="button" class="px-3 py-1.5 text-xs font-medium bg-white border border-kenarlik hover:border-birincil text-metin-ikincil rounded-lg flex items-center gap-1.5 transition-colors">
+                <span class="material-symbols-outlined text-sm">tune</span> Filtreler
+                <span id="filtreRozet" class="hidden px-1.5 bg-birincil text-white rounded-full text-2xs font-bold">0</span>
+                <span id="filtreOkIkon" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+            </button>
+            <button id="btnFiltreSifirla" type="button" class="px-2 py-1.5 text-xs font-medium text-metin-ikincil bg-white border border-kenarlik hover:border-durum-kritik hover:text-durum-kritik rounded-lg flex items-center gap-1 transition-colors" title="Tüm filtreleri sıfırla">
+                <span class="material-symbols-outlined text-sm">filter_alt_off</span> Sıfırla
+            </button>
+            <div class="flex-1"></div>
+            <span id="filtreSayac" class="text-2xs text-metin-ucuncul font-kod"></span>
+        </div>
+
+        <!-- Genişleyen kategorize panel (varsayılan gizli) -->
+        <div id="filtrePanel" class="hidden px-4 md:px-6 pb-3 pt-1 border-t border-kenarlik flex flex-wrap gap-x-8 gap-y-3">
+            <!-- Adresler -->
+            <div class="flex flex-col gap-1.5">
+                <span class="text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider">Adresler</span>
+                <div class="flex flex-wrap gap-2">
+                    <input id="filtreKaynakIP" class="w-32 px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none font-kod" placeholder="Kaynak IP" type="text" />
+                    <input id="filtreHedefIP" class="w-32 px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none font-kod" placeholder="Hedef IP" type="text" />
+                    <input id="filtreSite" class="w-36 px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none" placeholder="Site / domain" type="text" />
+                    <input id="filtrePort" class="w-20 px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none font-kod" placeholder="Port" inputmode="numeric" type="text" />
+                </div>
+            </div>
+            <!-- Protokol -->
+            <div class="flex flex-col gap-1.5">
+                <span class="text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider">Protokol</span>
+                <div id="protoChipler" class="flex gap-1">
+                    <button type="button" data-proto="tcp"  class="trafik-chip px-2 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors">TCP</button>
+                    <button type="button" data-proto="udp"  class="trafik-chip px-2 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors">UDP</button>
+                    <button type="button" data-proto="icmp" class="trafik-chip px-2 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors">ICMP</button>
+                    <button type="button" data-proto="diger" class="trafik-chip px-2 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors">Diğer</button>
+                </div>
+            </div>
+            <!-- TCP Bayrakları -->
+            <div class="flex flex-col gap-1.5">
+                <span class="text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider">TCP Bayrakları</span>
+                <div id="bayrakChipler" class="flex gap-1">
+                    <button type="button" data-bayrak="S" class="trafik-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="SYN">SYN</button>
+                    <button type="button" data-bayrak="A" class="trafik-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="ACK">ACK</button>
+                    <button type="button" data-bayrak="F" class="trafik-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="FIN">FIN</button>
+                    <button type="button" data-bayrak="R" class="trafik-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="RST">RST</button>
+                    <button type="button" data-bayrak="P" class="trafik-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="PSH">PSH</button>
+                    <button type="button" data-bayrak="U" class="trafik-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="URG">URG</button>
+                </div>
+            </div>
+            <!-- Seçenekler -->
+            <div class="flex flex-col gap-1.5">
+                <span class="text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider">Seçenekler</span>
+                <label class="flex items-center gap-1.5 cursor-pointer py-1" title="Panel (8000) ve SSH (22) trafiğini gizler">
+                    <input id="filtreYonetimGizle" checked class="w-3.5 h-3.5 text-birincil rounded focus:ring-0" type="checkbox" />
+                    <span class="text-xs text-metin-ikincil">Yönetim trafiğini gizle <span class="text-metin-ucuncul font-kod text-2xs">(8000/22)</span></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tablo -->
+    <div class="flex-1 relative overflow-hidden min-w-0 min-h-0">
+        <div class="absolute inset-0 overflow-auto">
+            <table class="w-full min-w-[1000px] text-left whitespace-nowrap font-kod text-xs">
+                <thead class="bg-slate-50 sticky top-0 border-b border-kenarlik z-10">
+                    <tr>
+                        <th class="kolon-detay px-2 py-2 text-2xs font-semibold text-metin-ikincil">#</th>
+                        <th class="px-2 py-2 text-2xs font-semibold text-metin-ikincil">Zaman</th>
+                        <th class="kolon-detay px-2 py-2 text-2xs font-semibold text-metin-ikincil">Arayüz</th>
+                        <th class="px-2 py-2 text-2xs font-semibold text-metin-ikincil">Kaynak</th>
+                        <th class="px-2 py-2 text-2xs font-semibold text-metin-ikincil">Hedef</th>
+                        <th class="px-2 py-2 text-2xs font-semibold text-metin-ikincil">Site / Info</th>
+                        <th class="px-2 py-2 text-2xs font-semibold text-metin-ikincil">Durum</th>
+                        <th class="px-2 py-2 text-2xs font-semibold text-metin-ikincil">Proto</th>
+                        <th class="kolon-detay px-2 py-2 text-2xs font-semibold text-metin-ikincil">Bayrak</th>
+                        <th class="kolon-detay px-2 py-2 text-2xs font-semibold text-metin-ikincil">TTL</th>
+                        <th class="kolon-detay px-2 py-2 text-2xs font-semibold text-metin-ikincil">Boyut</th>
+                        <th class="px-2 py-2 text-2xs font-semibold text-metin-ikincil">Kural</th>
+                    </tr>
+                </thead>
+                <tbody id="tblTrafikGovde" class="divide-y divide-slate-100"></tbody>
+            </table>
+            <div id="trafikBosMesaj" class="p-8 text-center text-metin-ucuncul text-sm">
+                <span class="material-symbols-outlined text-4xl text-metin-ucuncul">network_check</span>
+                <p class="mt-2">Henüz trafik kaydı yok.</p>
+                <p class="text-2xs mt-1">LAN istemcilerden trafik akmaya başladığında otomatik görünecek.</p>
+            </div>
+        </div>
+
+        <!-- Paket Detay Çekmecesi -->
+        <div class="w-80 bg-white border-l border-kenarlik shadow-buyuk flex flex-col z-20 shrink-0 transform transition-transform translate-x-full absolute right-0 inset-y-0 rounded-l-xl" id="paketDetayCekmecesi">
+            <div class="px-4 py-3 flex items-center justify-between border-b border-kenarlik">
+                <h3 class="text-sm font-semibold text-metin-birincil flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">plumbing</span> Paket Detayı
+                </h3>
+                <button class="p-1 rounded hover:bg-slate-100 text-metin-ucuncul" onclick="document.getElementById('paketDetayCekmecesi').classList.add('translate-x-full');">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-3 text-xs font-kod">
+                <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                    <div class="font-semibold text-durum-kritik mb-2">Denetim Sonucu</div>
+                    <div class="grid grid-cols-2 gap-1.5">
+                        <span class="text-metin-ucuncul">Aksiyon:</span><span class="font-semibold text-durum-kritik">—</span>
+                        <span class="text-metin-ucuncul">Kural:</span><span class="font-semibold text-birincil">—</span>
+                    </div>
+                </div>
+                <div class="bg-slate-50 border border-kenarlik rounded-lg p-3">
+                    <div class="font-semibold text-metin-ikincil mb-2">Ağ Katmanı (L3)</div>
+                    <div class="grid grid-cols-2 gap-1.5">
+                        <span class="text-metin-ucuncul">Kaynak:</span><span>—</span>
+                        <span class="text-metin-ucuncul">Hedef:</span><span>—</span>
+                    </div>
+                </div>
+                <div class="bg-slate-50 border border-kenarlik rounded-lg p-3">
+                    <div class="font-semibold text-metin-ikincil mb-2">Taşıma Katmanı (L4)</div>
+                    <div class="grid grid-cols-2 gap-1.5">
+                        <span class="text-metin-ucuncul">Kaynak Port:</span><span>—</span>
+                        <span class="text-metin-ucuncul">Hedef Port:</span><span>—</span>
+                    </div>
+                </div>
+                <div class="bg-slate-800 rounded-lg p-3 text-slate-300">
+                    <div class="font-semibold text-slate-400 mb-2 text-2xs">HEX DÖKÜMÜ</div>
+                    <div class="text-2xs whitespace-pre-wrap leading-relaxed select-all">—</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sayfalama: filtre uygulanınca TÜM eşleşmeler sayfa sayfa gezilir -->
+    <div class="px-4 md:px-6 py-2 border-t border-kenarlik bg-white flex flex-wrap items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-2 text-2xs text-metin-ucuncul">
+            <span id="trafikToplamMetni">—</span>
+            <span class="hidden sm:inline">·</span>
+            <label class="hidden sm:flex items-center gap-1">Sayfa boyutu:
+                <select id="trafikSayfaBoyutu" class="px-1.5 py-0.5 bg-white border border-kenarlik rounded text-2xs focus:border-birincil outline-none">
+                    <option value="50" selected>50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
+            </label>
+        </div>
+        <div class="flex items-center gap-1">
+            <button id="btnSayfaIlk" type="button" class="px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg hover:border-birincil disabled:opacity-40 disabled:cursor-not-allowed transition-colors" title="İlk sayfa">«</button>
+            <button id="btnSayfaOnceki" type="button" class="px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg hover:border-birincil disabled:opacity-40 disabled:cursor-not-allowed transition-colors" title="Önceki sayfa">‹</button>
+            <span id="trafikSayfaMetni" class="px-2 text-xs font-medium text-metin-ikincil">1 / 1</span>
+            <button id="btnSayfaSonraki" type="button" class="px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg hover:border-birincil disabled:opacity-40 disabled:cursor-not-allowed transition-colors" title="Sonraki sayfa">›</button>
+            <button id="btnSayfaSon" type="button" class="px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg hover:border-birincil disabled:opacity-40 disabled:cursor-not-allowed transition-colors" title="Son sayfa">»</button>
+        </div>
+    </div>
+  </div>
+  <!-- GORUNUM: ayarlar -->
+  <div id="gorunum-ayarlar" class="gorunum-alani hidden flex-col h-full w-full overflow-y-auto sayfa-gecis">
+    <div class="p-6 lg:p-8 max-w-4xl mx-auto w-full space-y-6">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-birincil/10 text-birincil rounded-lg flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined">settings</span>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-metin-birincil">Sistem Ayarları</h2>
+                <p class="text-sm text-metin-ucuncul mt-0.5">Hesabını, panel görünümünü ve cihaz tercihlerini buradan yönet</p>
+            </div>
+        </div>
+
+        <!-- Hesap Kartı -->
+        <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+            <div class="px-5 py-3 border-b border-kenarlik flex items-center gap-2">
+                <span class="material-symbols-outlined text-metin-ucuncul text-lg">account_circle</span>
+                <h3 class="text-sm font-semibold text-metin-birincil">Hesabım</h3>
+            </div>
+            <div class="p-5 flex items-center gap-4">
+                <div class="w-14 h-14 bg-birincil rounded-full flex items-center justify-center text-white font-bold text-lg profil-bh-buyuk shrink-0 shadow-yumusak">BB</div>
+                <div class="flex flex-col gap-1 min-w-0">
+                    <span class="text-base font-bold text-metin-birincil truncate profil-isim">—</span>
+                    <span class="text-xs text-metin-ucuncul font-kod truncate"><span class="profil-kadi"></span></span>
+                    <span class="inline-flex items-center gap-1 w-fit mt-0.5 px-2 py-0.5 bg-birincil/10 text-birincil text-2xs font-semibold rounded-full">
+                        <span class="material-symbols-outlined text-sm">verified_user</span>
+                        <span class="profil-rol">—</span>
+                    </span>
+                </div>
+                <a href="#kullanici_yonetimi" class="profil-admin-only ml-auto self-start px-3 py-2 bg-white border border-kenarlik hover:border-birincil text-metin-ikincil hover:text-birincil text-xs font-medium rounded-lg flex items-center gap-1.5 transition-colors shrink-0">
+                    <span class="material-symbols-outlined text-base">manage_accounts</span> Kullanıcıları Yönet
+                </a>
+            </div>
+        </div>
+
+        <!-- Görünüm & Kişiselleştirme -->
+        <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+            <div class="px-5 py-3 border-b border-kenarlik flex items-center gap-2">
+                <span class="material-symbols-outlined text-metin-ucuncul text-lg">palette</span>
+                <h3 class="text-sm font-semibold text-metin-birincil">Görünüm</h3>
+            </div>
+            <div class="p-5 space-y-5">
+                <!-- Tema Rengi -->
+                <div>
+                    <p class="text-xs font-medium text-metin-ikincil mb-1">Tema Rengi</p>
+                    <p class="text-2xs text-metin-ucuncul mb-3">Panelin ana vurgu rengini seç — değişiklik anında uygulanır.</p>
+                    <div id="temaRenkPaleti" class="flex flex-wrap gap-2.5"></div>
+                </div>
+                <!-- Hareketleri Azalt -->
+                <div class="flex items-center justify-between gap-4 pt-4 border-t border-kenarlik">
+                    <div class="min-w-0">
+                        <p class="text-sm font-medium text-metin-birincil">Hareketleri Azalt</p>
+                        <p class="text-2xs text-metin-ucuncul mt-0.5">Animasyon ve geçişleri kapatır (daha sakin, daha hızlı arayüz).</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                        <input type="checkbox" id="ayarHareketAzalt" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 rounded-full peer-checked:bg-birincil transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:shadow after:transition-all peer-checked:after:translate-x-5"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Tercihleri -->
+        <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+            <div class="px-5 py-3 border-b border-kenarlik flex items-center gap-2">
+                <span class="material-symbols-outlined text-metin-ucuncul text-lg">tune</span>
+                <h3 class="text-sm font-semibold text-metin-birincil">Panel Tercihleri</h3>
+            </div>
+            <div class="p-5 space-y-5">
+                <!-- Varsayılan açılış sayfası -->
+                <div class="flex items-center justify-between gap-4">
+                    <div class="min-w-0">
+                        <p class="text-sm font-medium text-metin-birincil">Açılış Sayfası</p>
+                        <p class="text-2xs text-metin-ucuncul mt-0.5">Panel açıldığında ilk gösterilecek sekme.</p>
+                    </div>
+                    <select id="ayarAcilisSayfasi" class="w-48 bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none shrink-0">
+                        <option value="dashboard">Kontrol Paneli</option>
+                        <option value="kurallar">Güvenlik Kuralları</option>
+                        <option value="yonlendirme">Yönlendirme</option>
+                        <option value="dhcp">DHCP Sunucu</option>
+                        <option value="trafik">Trafik Kayıtları</option>
+                        <option value="cihazlar">Bağlı Cihazlar</option>
+                        <option value="sistem_loglari_sekme">Sistem Logları</option>
+                    </select>
+                </div>
+                <!-- Kenar çubuğu başlangıçta dar -->
+                <div class="flex items-center justify-between gap-4 pt-4 border-t border-kenarlik">
+                    <div class="min-w-0">
+                        <p class="text-sm font-medium text-metin-birincil">Kenar Çubuğu Daraltılmış Başlasın</p>
+                        <p class="text-2xs text-metin-ucuncul mt-0.5">Sol menü her açılışta dar (yalnızca ikonlu) gelir.</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                        <input type="checkbox" id="ayarKenarCubuguDar" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 rounded-full peer-checked:bg-birincil transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:shadow after:transition-all peer-checked:after:translate-x-5"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cihaz Bilgileri -->
+        <div id="genelAyarlar" class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+            <div class="px-5 py-3 border-b border-kenarlik flex items-center gap-2">
+                <span class="material-symbols-outlined text-metin-ucuncul text-lg">dns</span>
+                <h3 class="text-sm font-semibold text-metin-birincil">Cihaz Bilgileri</h3>
+            </div>
+            <form id="formAyarlar" class="p-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="flex flex-col gap-1.5">
+                    <label for="ayarHostname" class="text-xs font-medium text-metin-ikincil">Sunucu Ana Adı (Hostname)</label>
+                    <input id="ayarHostname" class="w-full bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none" placeholder="SistemAdı" type="text" />
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label for="ayarDomain" class="text-xs font-medium text-metin-ikincil">Etki Alanı (Domain)</label>
+                    <input id="ayarDomain" class="w-full bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none" placeholder="localdomain" type="text" />
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label for="ayarDil" class="text-xs font-medium text-metin-ikincil">Dil / Yerelleştirme</label>
+                    <select id="ayarDil" class="w-full bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none">
+                        <option value="tr">Türkçe (TR)</option>
+                        <option value="en">English (EN)</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label for="ayarSaatDilimi" class="text-xs font-medium text-metin-ikincil">Saat Dilimi</label>
+                    <select id="ayarSaatDilimi" class="w-full bg-slate-50 border border-kenarlik rounded-lg text-sm p-2.5 focus:border-birincil outline-none">
+                        <option value="Europe/Istanbul">Europe/Istanbul (UTC+3)</option>
+                        <option value="UTC">UTC (UTC+0)</option>
+                        <option value="Europe/London">Europe/London (UTC+0/+1)</option>
+                        <option value="America/New_York">America/New_York (UTC-5/-4)</option>
+                    </select>
+                </div>
+            </form>
+            <div id="ayarlarDurum" class="hidden px-5 py-2 mx-5 mb-3 text-xs font-medium rounded-lg"></div>
+            <div class="px-5 py-3 border-t border-kenarlik flex items-center justify-between gap-3">
+                <p class="text-2xs text-metin-ucuncul">Görünüm tercihleri anında, bu kart Kaydet ile kalıcı olur.</p>
+                <button id="btnAyarlarKaydet" class="px-5 py-2 bg-birincil hover:bg-birincil-koyu text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2 shrink-0">
+                    <span class="material-symbols-outlined text-base">save</span> Kaydet
+                </button>
+            </div>
+        </div>
+
+        <!-- Sistem Güncelleme -->
+        <div id="sistemGuncelleme" class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+            <div class="px-5 py-3 border-b border-kenarlik flex items-center gap-2">
+                <span class="material-symbols-outlined text-metin-ucuncul text-lg">system_update</span>
+                <h3 class="text-sm font-semibold text-metin-birincil">Sistem Güncellemeleri</h3>
+            </div>
+            <div class="p-5 flex items-center gap-4">
+                <div class="w-10 h-10 bg-durum-basarili/10 rounded-lg flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-durum-basarili">check_circle</span>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-metin-birincil">Sistem güncel</p>
+                    <p class="text-xs text-metin-ucuncul">Black Barrier Sürüm 1.0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+    <!-- GORUNUM: kullanici_yonetimi -->
+    <div id="gorunum-kullanici_yonetimi" class="gorunum-alani hidden flex-col h-full w-full overflow-y-auto sayfa-gecis">
+        <div class="p-6 space-y-6">
+            <!-- Başlık -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-metin-birincil">Kullanıcı Yönetimi</h2>
+                    <p class="text-sm text-metin-ucuncul mt-1">Sisteme erişimi olan tüm hesapları yönetin</p>
+                </div>
+                <button id="btnKullaniciEkleGorunum" class="px-5 py-2.5 bg-birincil hover:bg-birincil-koyu text-white text-sm font-semibold rounded-lg flex items-center gap-2 transition-colors shadow-yumusak">
+                    <span class="material-symbols-outlined text-lg">person_add</span> Yeni Kullanıcı
+                </button>
+            </div>
+
+            <!-- Kullanıcı Tablosu -->
+            <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left min-w-[600px]">
+                        <thead class="bg-slate-50 border-b border-kenarlik">
+                            <tr>
+                                <th class="px-5 py-3 text-xs font-semibold text-metin-ikincil">Kullanıcı Adı</th>
+                                <th class="px-5 py-3 text-xs font-semibold text-metin-ikincil">Ad Soyad</th>
+                                <th class="px-5 py-3 text-xs font-semibold text-metin-ikincil">Rol</th>
+                                <th class="px-5 py-3 text-xs font-semibold text-metin-ikincil hidden lg:table-cell">Son Giriş</th>
+                                <th class="px-5 py-3 text-xs font-semibold text-metin-ikincil text-right">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblKullanicilarGovde" class="text-sm divide-y divide-slate-100">
+                            <!-- JS ile Doldurulacak -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-6 text-center text-metin-ucuncul text-sm" id="kullaniciYukleniyor">
+                    <span class="material-symbols-outlined animate-spin text-birincil">progress_activity</span>
+                    <p class="mt-2">Kullanıcılar yükleniyor...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GORUNUM: cihazlar -->
+    <div id="gorunum-cihazlar" class="gorunum-alani hidden flex-col h-full w-full overflow-y-auto sayfa-gecis">
+        <div class="p-6 space-y-6">
+            <!-- Başlık + sayaç + yenile -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-birincil/10 text-birincil rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined">devices</span>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-metin-birincil">Bağlı Cihazlar</h2>
+                        <p class="text-sm text-metin-ucuncul mt-0.5">Firewall'a görünen yerel ağ cihazları — <span id="cihazSayisi" class="font-semibold text-birincil">0</span> aktif</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="cihazlarSonGuncelleme" class="text-2xs text-metin-ucuncul font-kod"></span>
+                    <button id="btnCihazlarYenile" class="px-4 py-2 bg-white border border-kenarlik hover:border-birincil text-metin-ikincil hover:text-birincil text-xs font-medium rounded-lg flex items-center gap-1.5 transition-colors">
+                        <span class="material-symbols-outlined text-base">refresh</span> Yenile
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bilgilendirme -->
+            <div class="flex items-start gap-2.5 px-4 py-2.5 bg-blue-50 border border-blue-200 rounded-lg">
+                <span class="material-symbols-outlined text-birincil text-base mt-0.5">info</span>
+                <p class="text-xs text-blue-800 leading-relaxed">
+                    Liste iki kaynaktan birleştirilir: <b>DHCP lease</b> (host adıyla bilinen, IP almış cihazlar) ve
+                    <b>ARP tablosu</b> (firewall'ın görüştüğü tüm L2 komşuları). Cihaz IP'sini hızlıca engellemek için sağdaki menüyü kullanın.
+                </p>
+            </div>
+
+            <!-- Cihaz Tablosu -->
+            <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left min-w-[700px]">
+                        <thead class="bg-slate-50 border-b border-kenarlik">
+                            <tr>
+                                <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil">IP Adresi</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil">MAC Adresi</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil">Host Adı</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil">Kaynak</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil hidden md:table-cell">Arayüz</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil hidden lg:table-cell">Son Görülme</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-metin-ikincil text-right">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblCihazlarGovde" class="text-sm divide-y divide-slate-100">
+                            <!-- JS doldurur -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="cihazlarBos" class="p-8 text-center text-metin-ucuncul text-sm hidden">
+                    <span class="material-symbols-outlined text-4xl text-metin-ucuncul">router</span>
+                    <p class="mt-2">Henüz görünen bir cihaz yok.</p>
+                    <p class="text-2xs mt-1">DHCP sunucusunun aktif olduğundan emin olun veya LAN istemcilerinden firewall'a bir paket gönderin.</p>
+                </div>
+                <div id="cihazlarYukleniyor" class="p-8 text-center text-metin-ucuncul text-sm">
+                    <span class="material-symbols-outlined animate-spin text-birincil">progress_activity</span>
+                    <p class="mt-2">Cihazlar taranıyor...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GORUNUM: sistem_loglari_sekme -->
+    <div id="gorunum-sistem_loglari_sekme" class="gorunum-alani hidden flex-col h-full w-full overflow-y-auto sayfa-gecis">
+        <div class="p-6 space-y-6">
+            <!-- Başlık -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-metin-birincil">Sistem Logları</h2>
+                    <p class="text-sm text-metin-ucuncul mt-1">Güvenlik duvarı olaylarını ve sistem kayıtlarını izleyin</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <select id="selSistemLogFiltre" class="bg-white border border-kenarlik text-sm text-metin-birincil px-3 py-2 rounded-lg focus:border-birincil outline-none">
+                        <option value="">Tüm Olaylar</option>
+                        <option value="baslangic">Başlangıç</option>
+                        <option value="durma">Durma / Kapatma</option>
+                        <option value="hata">Hatalar</option>
+                        <option value="yeniden_baslatma">Yeniden Başlatma</option>
+                    </select>
+                    <button id="btnSistemLogYenile" class="px-4 py-2 bg-white border border-kenarlik hover:border-birincil text-metin-ikincil hover:text-birincil text-sm font-medium rounded-lg flex items-center gap-2 transition-colors">
+                        <span class="material-symbols-outlined text-lg">refresh</span> Yenile
+                    </button>
+                </div>
+            </div>
+
+            <!-- Şüpheli IP Adresleri (minimal grafik + liste) -->
+            <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+                <div class="px-5 py-4 border-b border-kenarlik flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-lg bg-durum-kritik/10 text-durum-kritik flex items-center justify-center">
+                            <span class="material-symbols-outlined text-lg">gpp_maybe</span>
+                        </span>
+                        <div>
+                            <h3 class="text-sm font-bold text-metin-birincil">Şüpheli IP Adresleri</h3>
+                            <p class="text-2xs text-metin-ucuncul">Başarısız giriş ve engellenen erişim denemelerine göre</p>
+                        </div>
+                    </div>
+                    <span id="supheliToplam" class="text-2xs font-medium text-metin-ucuncul"></span>
+                </div>
+                <div class="p-5">
+                    <!-- Minimal yatay çubuk grafik -->
+                    <div id="supheliGrafik" class="space-y-2.5"></div>
+                    <!-- Detaylı şüpheli adres listesi -->
+                    <div id="supheliListe" class="mt-4 pt-4 border-t border-kenarlik space-y-1 hidden"></div>
+                </div>
+            </div>
+
+            <!-- Dosya Değişiklikleri (File Integrity Monitor) -->
+            <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+                <div class="px-5 py-4 border-b border-kenarlik flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-lg bg-durum-uyari/10 text-durum-uyari flex items-center justify-center">
+                            <span class="material-symbols-outlined text-lg">folder_managed</span>
+                        </span>
+                        <div>
+                            <h3 class="text-sm font-bold text-metin-birincil">Dosya Değişiklikleri</h3>
+                            <p class="text-2xs text-metin-ucuncul">Proje dosyalarındaki yeni/değişen/silinen kayıtlar (sha256 bütünlük taraması)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="dosyaDegisikligiToplam" class="text-2xs font-medium text-metin-ucuncul"></span>
+                        <button id="btnDosyaTara" class="px-2 py-1.5 text-xs font-medium bg-white border border-kenarlik hover:border-birincil text-metin-ikincil hover:text-birincil rounded-lg flex items-center gap-1 transition-colors" title="Şimdi tara">
+                            <span class="material-symbols-outlined text-base">manage_search</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div id="dosyaDegisiklikleriListe" class="space-y-1.5"></div>
+                    <div id="dosyaDegisiklikleriBos" class="text-center text-metin-ucuncul text-xs py-6 hidden">
+                        Henüz değişiklik yok — baseline ile uyumlu.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trafik Arşivi (12 saatlik snapshot + sha256) -->
+            <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+                <div class="px-5 py-4 border-b border-kenarlik flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-lg bg-birincil/10 text-birincil flex items-center justify-center">
+                            <span class="material-symbols-outlined text-lg">inventory_2</span>
+                        </span>
+                        <div>
+                            <h3 class="text-sm font-bold text-metin-birincil">Trafik Arşivi</h3>
+                            <p class="text-2xs text-metin-ucuncul">Her 12 saatte bir trafik kayıtları JSON snapshot + sha256 damgası ile diske yazılır</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="trafikArsivToplam" class="text-2xs font-medium text-metin-ucuncul"></span>
+                        <button id="btnTrafikArsivCalistir" class="profil-admin-only px-3 py-1.5 text-xs font-medium bg-birincil hover:bg-birincil-koyu text-white rounded-lg flex items-center gap-1 transition-colors shadow-yumusak" title="12 saati beklemeden hemen bir snapshot al">
+                            <span class="material-symbols-outlined text-base">save</span> Şimdi Arşivle
+                        </button>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div id="trafikArsivListe" class="space-y-2"></div>
+                    <div id="trafikArsivBos" class="text-center text-metin-ucuncul text-xs py-6 hidden">
+                        Henüz arşiv yok — ilk snapshot oluşturulduğunda burada görünecek.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log Tablosu -->
+            <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left min-w-[600px]">
+                        <thead class="bg-slate-50 border-b border-kenarlik">
+                            <tr>
+                                <th class="px-5 py-3 text-xs font-semibold text-metin-ikincil w-48">Tarih / Saat</th>
+                                <th class="px-5 py-3 text-xs font-semibold text-metin-ikincil w-40">Olay Türü</th>
+                                <th class="px-5 py-3 text-xs font-semibold text-metin-ikincil">Açıklama</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblSistemLoglariGovde" class="text-sm divide-y divide-slate-100">
+                            <!-- JS ile Doldurulacak -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Eski Trafik Loglarını İncele (İçeri Aktar + VirusTotal) -->
+            <div class="bg-white rounded-xl border border-kenarlik shadow-yumusak overflow-hidden">
+                <div class="px-5 py-4 border-b border-kenarlik flex items-center justify-between gap-3 flex-wrap">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-lg bg-birincil/10 text-birincil flex items-center justify-center">
+                            <span class="material-symbols-outlined text-lg">upload_file</span>
+                        </span>
+                        <div>
+                            <h3 class="text-sm font-bold text-metin-birincil">Eski Trafik Loglarını İncele</h3>
+                            <p class="text-2xs text-metin-ucuncul">Kaydedilmiş trafik log dosyasını (.json) içeri aktar; her kaydı tek tıkla VirusTotal'de tara.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="logIceriDurum" class="text-2xs text-metin-ucuncul"></span>
+                        <button id="btnLogIceriAktar" class="px-3 py-2 bg-birincil hover:bg-birincil-koyu text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors shadow-yumusak">
+                            <span class="material-symbols-outlined text-sm">file_upload</span> İçeri Aktar
+                        </button>
+                        <input id="logDosyaInput" type="file" accept=".json,application/json" class="hidden" />
+                    </div>
+                </div>
+                <!-- İçe aktarılmadan önce -->
+                <div id="iceriLogBos" class="p-6 text-center text-metin-ucuncul text-xs">
+                    Henüz dosya aktarılmadı. "İçeri Aktar" ile bir <span class="font-kod">.json</span> trafik log dosyası seç.
+                </div>
+
+                <!-- İçe aktarıldıktan sonra: gelişmiş filtre + tablo + sayfalama -->
+                <div id="iceriLogIcerik" class="hidden">
+                    <!-- Filtre: kompakt çubuk + gelişmiş açılır panel -->
+                    <div class="bg-slate-50 border-b border-kenarlik">
+                        <div class="px-5 py-2 flex flex-wrap items-center gap-2">
+                            <div class="relative flex-1 min-w-[160px] max-w-xs">
+                                <span class="absolute left-2.5 top-1/2 -translate-y-1/2 material-symbols-outlined text-metin-ucuncul text-base pointer-events-none">search</span>
+                                <input id="iceriAra" class="w-full pl-8 pr-2 py-1.5 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none" placeholder="Ara: site, IP, port…" type="text" />
+                            </div>
+                            <select id="iceriEylem" class="px-2 py-1.5 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none">
+                                <option value="">Tüm durumlar</option>
+                                <option value="izin_ver">✓ İzin</option>
+                                <option value="engelle">✕ Engellendi</option>
+                                <option value="reddet">⊘ Reddedildi</option>
+                            </select>
+                            <button id="iceriGelismisAc" type="button" class="px-3 py-1.5 text-xs font-medium bg-white border border-kenarlik hover:border-birincil text-metin-ikincil rounded-lg flex items-center gap-1.5 transition-colors">
+                                <span class="material-symbols-outlined text-sm">tune</span> Gelişmiş
+                                <span id="iceriGelismisRozet" class="hidden px-1.5 bg-birincil text-white rounded-full text-2xs font-bold">0</span>
+                                <span id="iceriGelismisOk" class="material-symbols-outlined text-sm">expand_more</span>
+                            </button>
+                            <button id="btnIceriSifirla" type="button" class="px-2 py-1.5 text-xs font-medium text-metin-ikincil bg-white border border-kenarlik hover:border-durum-kritik hover:text-durum-kritik rounded-lg flex items-center gap-1 transition-colors" title="Filtreleri sıfırla">
+                                <span class="material-symbols-outlined text-sm">filter_alt_off</span> Sıfırla
+                            </button>
+                            <div class="flex-1"></div>
+                            <span id="iceriSayac" class="text-2xs text-metin-ucuncul font-kod"></span>
+                        </div>
+                        <div id="iceriGelismisPanel" class="hidden px-5 pb-3 pt-1 border-t border-kenarlik flex flex-wrap gap-x-6 gap-y-3">
+                            <div class="flex flex-col gap-1.5">
+                                <span class="text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider">Adresler</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <input id="iceriKaynak" class="w-28 px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none font-kod" placeholder="Kaynak IP" type="text" />
+                                    <input id="iceriHedef" class="w-28 px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none font-kod" placeholder="Hedef IP" type="text" />
+                                    <input id="iceriSite" class="w-36 px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none" placeholder="Site / domain" type="text" />
+                                    <input id="iceriPort" class="w-20 px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none font-kod" placeholder="Port" inputmode="numeric" type="text" />
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <span class="text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider">Protokol</span>
+                                <div id="iceriProtoChipler" class="flex gap-1">
+                                    <button type="button" data-proto="tcp" class="iceri-chip px-2 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors">TCP</button>
+                                    <button type="button" data-proto="udp" class="iceri-chip px-2 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors">UDP</button>
+                                    <button type="button" data-proto="icmp" class="iceri-chip px-2 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors">ICMP</button>
+                                    <button type="button" data-proto="diger" class="iceri-chip px-2 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors">Diğer</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <span class="text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider">TCP Bayrakları</span>
+                                <div id="iceriBayrakChipler" class="flex gap-1">
+                                    <button type="button" data-bayrak="S" class="iceri-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="SYN">SYN</button>
+                                    <button type="button" data-bayrak="A" class="iceri-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="ACK">ACK</button>
+                                    <button type="button" data-bayrak="F" class="iceri-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="FIN">FIN</button>
+                                    <button type="button" data-bayrak="R" class="iceri-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="RST">RST</button>
+                                    <button type="button" data-bayrak="P" class="iceri-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="PSH">PSH</button>
+                                    <button type="button" data-bayrak="U" class="iceri-chip px-1.5 py-1 text-2xs font-bold rounded border border-kenarlik bg-white text-metin-ucuncul transition-colors" title="URG">URG</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <span class="text-2xs font-semibold text-metin-ucuncul uppercase tracking-wider">Zaman Aralığı</span>
+                                <div class="flex flex-wrap gap-2 items-center">
+                                    <input id="iceriZamanBas" class="px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none" type="datetime-local" />
+                                    <span class="text-2xs text-metin-ucuncul">—</span>
+                                    <input id="iceriZamanBitis" class="px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg focus:border-birincil outline-none" type="datetime-local" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tablo -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left min-w-[720px] text-sm">
+                            <thead class="bg-slate-50 border-b border-kenarlik">
+                                <tr>
+                                    <th class="px-4 py-2.5 text-xs font-semibold text-metin-ikincil">Zaman</th>
+                                    <th class="px-4 py-2.5 text-xs font-semibold text-metin-ikincil">Kaynak</th>
+                                    <th class="px-4 py-2.5 text-xs font-semibold text-metin-ikincil">Hedef</th>
+                                    <th class="px-4 py-2.5 text-xs font-semibold text-metin-ikincil">Site / Info</th>
+                                    <th class="px-4 py-2.5 text-xs font-semibold text-metin-ikincil">Eylem</th>
+                                    <th class="px-4 py-2.5 text-xs font-semibold text-metin-ikincil text-center">VirusTotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblIceriLogGovde" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                    <div id="iceriEslesmeYok" class="hidden p-4 text-center text-metin-ucuncul text-xs">Filtreyle eşleşen kayıt yok.</div>
+
+                    <!-- Sayfalama -->
+                    <div class="px-5 py-2 border-t border-kenarlik flex flex-wrap items-center justify-between gap-3">
+                        <label class="flex items-center gap-1 text-2xs text-metin-ucuncul">Sayfa boyutu:
+                            <select id="iceriSayfaBoyutu" class="px-1.5 py-0.5 bg-white border border-kenarlik rounded text-2xs focus:border-birincil outline-none">
+                                <option value="25">25</option>
+                                <option value="50" selected>50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </label>
+                        <div class="flex items-center gap-1">
+                            <button id="btnIceriIlk" type="button" class="px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg hover:border-birincil disabled:opacity-40 disabled:cursor-not-allowed transition-colors" title="İlk sayfa">«</button>
+                            <button id="btnIceriOnceki" type="button" class="px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg hover:border-birincil disabled:opacity-40 disabled:cursor-not-allowed transition-colors" title="Önceki">‹</button>
+                            <span id="iceriSayfaMetni" class="px-2 text-xs font-medium text-metin-ikincil">1 / 1</span>
+                            <button id="btnIceriSonraki" type="button" class="px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg hover:border-birincil disabled:opacity-40 disabled:cursor-not-allowed transition-colors" title="Sonraki">›</button>
+                            <button id="btnIceriSon" type="button" class="px-2 py-1 text-xs bg-white border border-kenarlik rounded-lg hover:border-birincil disabled:opacity-40 disabled:cursor-not-allowed transition-colors" title="Son sayfa">»</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+        <!-- Sağ Yan Panel - Sistem Sağlığı -->
+        <aside id="sag-panel" class="w-72 bg-white border-l border-kenarlik flex flex-col z-10 hidden xl:flex">
+            <div class="p-5 border-b border-kenarlik">
+                <div class="flex flex-col gap-2">
+                    <span class="text-xs font-semibold text-metin-ucuncul">Sistem Sağlığı</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="size-3 bg-durum-basarili rounded-full animasyon-nabiz-yavas"></span>
+                        <span class="text-lg font-bold text-metin-birincil">Çevrimiçi</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-5 flex-1 flex flex-col gap-6 overflow-y-auto">
+                <!-- RAM -->
+                <div class="flex flex-col gap-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-semibold text-metin-ikincil flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">memory</span>
+                            Bellek (RAM)
+                        </span>
+                        <span class="text-xs font-bold text-metin-birincil">—</span>
+                    </div>
+                    <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-birincil rounded-full w-[0%] transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <!-- Disk -->
+                <div class="flex flex-col gap-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-semibold text-metin-ikincil flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">save</span>
+                            Disk I/O
+                        </span>
+                        <span class="text-xs font-bold text-metin-birincil">—</span>
+                    </div>
+                    <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-veri-cizgisi rounded-full w-[0%] transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <!-- Son Olaylar -->
+                <div class="pt-4 border-t border-kenarlik">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-semibold text-metin-ucuncul">Son Olaylar</span>
+                        <a href="#sistem_loglari_sekme" class="text-xs font-medium text-birincil hover:underline">Tümünü Gör</a>
+                    </div>
+                    <div id="sagPanelSistemLoglari" class="flex flex-col gap-3 text-center">
+                        <span class="text-metin-ucuncul text-xs">Kayıt bulunamadı</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- ═══════════════════════════════════
+         MODALLAR
+         ═══════════════════════════════════ -->
+
+    <!-- Kullanıcı Ekleme / Düzenleme Modalı -->
+    <div id="modalKullaniciEkle" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-buyuk border border-kenarlik modal-giris max-h-[92vh] flex flex-col">
+            <div class="px-6 py-4 border-b border-kenarlik flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 bg-birincil/10 text-birincil rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-lg">person_add</span>
+                    </span>
+                    <h3 id="modalKullaniciBaslik" class="font-bold text-lg text-metin-birincil">Yeni Kullanıcı</h3>
+                </div>
+                <button id="btnKullaniciModalKapat" class="p-1 rounded-lg hover:bg-slate-100 text-metin-ucuncul hover:text-durum-kritik transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="formKullaniciEkle" class="p-6 flex flex-col gap-4 overflow-y-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-medium text-metin-ikincil">Kullanıcı Adı <span class="text-durum-kritik">*</span></label>
+                        <input id="modalKullaniciAdi" required autocomplete="off" class="w-full px-4 py-2.5 bg-slate-50 border border-kenarlik rounded-lg focus:border-birincil focus:ring-2 focus:ring-birincil/20 outline-none text-sm text-metin-birincil placeholder-metin-ucuncul disabled:opacity-60" placeholder="ör. mehmet" type="text" />
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-medium text-metin-ikincil">Ad Soyad</label>
+                        <input id="modalAdSoyad" class="w-full px-4 py-2.5 bg-slate-50 border border-kenarlik rounded-lg focus:border-birincil focus:ring-2 focus:ring-birincil/20 outline-none text-sm text-metin-birincil placeholder-metin-ucuncul" placeholder="Mehmet Yılmaz" type="text" />
+                    </div>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-sm font-medium text-metin-ikincil">Şifre <span class="text-durum-kritik">*</span></label>
+                    <div class="relative">
+                        <input id="modalSifre" required autocomplete="new-password" class="w-full px-4 py-2.5 pr-10 bg-slate-50 border border-kenarlik rounded-lg focus:border-birincil focus:ring-2 focus:ring-birincil/20 outline-none text-sm text-metin-birincil placeholder-metin-ucuncul" placeholder="••••••••" type="password" />
+                        <button type="button" id="btnSifreGoster" tabindex="-1" title="Şifreyi göster/gizle" class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded text-metin-ucuncul hover:text-birincil transition-colors">
+                            <span class="material-symbols-outlined text-lg">visibility</span>
+                        </button>
+                    </div>
+                    <p id="modalSifreNot" class="text-2xs text-metin-ucuncul">En az 4 karakter. Düzenlemede boş bırakılırsa şifre değişmez.</p>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-metin-ikincil">Rol ve Yetkiler <span class="text-durum-kritik">*</span></label>
+                    <!-- admin -->
+                    <label class="flex items-start gap-3 p-3 bg-slate-50 border-2 border-kenarlik rounded-xl cursor-pointer transition-colors has-[:checked]:border-durum-kritik has-[:checked]:bg-red-50">
+                        <input type="radio" name="modalKullaniciRol" value="admin" class="sr-only">
+                        <span class="material-symbols-outlined text-durum-kritik mt-0.5">shield_person</span>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-semibold text-metin-birincil">Admin</span>
+                                <span class="px-1.5 py-0.5 bg-red-100 text-red-700 text-2xs font-semibold rounded-full">Tam yetki</span>
+                            </div>
+                            <p class="text-2xs text-metin-ucuncul mt-0.5 leading-snug">Kullanıcı yönetimi, tüm güvenlik kuralları, NAT, DHCP ve sistem. Her şeyi yazabilir.</p>
+                        </div>
+                    </label>
+                    <!-- yonetici (varsayılan) -->
+                    <label class="flex items-start gap-3 p-3 bg-slate-50 border-2 border-kenarlik rounded-xl cursor-pointer transition-colors has-[:checked]:border-birincil has-[:checked]:bg-birincil/5">
+                        <input type="radio" name="modalKullaniciRol" value="yonetici" checked class="sr-only">
+                        <span class="material-symbols-outlined text-birincil mt-0.5">manage_accounts</span>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-semibold text-metin-birincil">Yönetici</span>
+                                <span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 text-2xs font-semibold rounded-full">Ağ yönetimi</span>
+                            </div>
+                            <p class="text-2xs text-metin-ucuncul mt-0.5 leading-snug">Güvenlik kuralları, yönlendirme ve DHCP'yi düzenleyebilir. <b>Kullanıcı yönetimi yok.</b></p>
+                        </div>
+                    </label>
+                    <!-- izleyici -->
+                    <label class="flex items-start gap-3 p-3 bg-slate-50 border-2 border-kenarlik rounded-xl cursor-pointer transition-colors has-[:checked]:border-metin-ikincil has-[:checked]:bg-slate-100">
+                        <input type="radio" name="modalKullaniciRol" value="izleyici" class="sr-only">
+                        <span class="material-symbols-outlined text-metin-ikincil mt-0.5">visibility</span>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-semibold text-metin-birincil">İzleyici</span>
+                                <span class="px-1.5 py-0.5 bg-slate-200 text-slate-600 text-2xs font-semibold rounded-full">Salt okunur</span>
+                            </div>
+                            <p class="text-2xs text-metin-ucuncul mt-0.5 leading-snug">Yalnızca görüntüler — hiçbir kuralı, ayarı veya kullanıcıyı değiştiremez.</p>
+                        </div>
+                    </label>
+                </div>
+
+                <div id="modalKullaniciHata" class="hidden p-3 bg-red-50 border border-red-200 text-durum-kritik text-sm font-medium rounded-lg"></div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-kenarlik">
+                    <button type="button" id="btnKullaniciModalIptal" class="px-5 py-2.5 border border-kenarlik hover:bg-slate-50 text-metin-ikincil font-medium text-sm rounded-lg transition-colors">İptal</button>
+                    <button type="submit" id="btnKullaniciKaydet" class="px-5 py-2.5 bg-birincil hover:bg-birincil-koyu text-white font-medium text-sm rounded-lg transition-colors flex items-center gap-2 shadow-yumusak">
+                        <span class="material-symbols-outlined text-lg">save</span> Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Yönlendirme Kuralı Ekleme Modalı -->
+    <div id="modalYonlendirme" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-buyuk border border-kenarlik modal-giris">
+            <div class="px-6 py-4 border-b border-kenarlik flex justify-between items-center">
+                <h3 class="font-bold text-lg text-metin-birincil">Yeni Yönlendirme Kuralı</h3>
+                <button id="btnYonlendirmeModalKapat" type="button" class="p-1 rounded-lg hover:bg-slate-100 text-metin-ucuncul hover:text-durum-kritik transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="formYonlendirme" class="p-6 flex flex-col gap-5 max-h-[78vh] overflow-y-auto">
+                <!-- ADIM 1: Ne yapmak istiyorsun? -->
+                <div class="space-y-2">
+                    <p class="text-sm font-semibold text-metin-birincil flex items-center gap-2">
+                        <span class="w-5 h-5 bg-birincil text-white text-2xs rounded-full flex items-center justify-center font-bold">1</span>
+                        Ne yapmak istiyorsun?
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <label class="flex flex-col items-center gap-1 px-2 py-3 bg-slate-50 border-2 border-kenarlik rounded-xl cursor-pointer transition-colors has-[:checked]:border-birincil has-[:checked]:bg-birincil/5 text-center">
+                            <input type="radio" name="ynSenaryo" value="dnat" checked class="sr-only">
+                            <span class="material-symbols-outlined text-2xl text-birincil">dns</span>
+                            <span class="text-xs font-semibold text-metin-birincil">Port Yönlendirme</span>
+                            <span class="text-2xs text-metin-ucuncul leading-tight">Dışarıdan bir cihaza/servise eriş</span>
+                        </label>
+                        <label class="flex flex-col items-center gap-1 px-2 py-3 bg-slate-50 border-2 border-kenarlik rounded-xl cursor-pointer transition-colors has-[:checked]:border-durum-basarili has-[:checked]:bg-green-50 text-center">
+                            <input type="radio" name="ynSenaryo" value="masquerade" class="sr-only">
+                            <span class="material-symbols-outlined text-2xl text-durum-basarili">lan</span>
+                            <span class="text-xs font-semibold text-metin-birincil">İnternet Paylaşımı</span>
+                            <span class="text-2xs text-metin-ucuncul leading-tight">LAN cihazları internete çıksın</span>
+                        </label>
+                        <label class="flex flex-col items-center gap-1 px-2 py-3 bg-slate-50 border-2 border-kenarlik rounded-xl cursor-pointer transition-colors has-[:checked]:border-purple-500 has-[:checked]:bg-purple-50 text-center">
+                            <input type="radio" name="ynSenaryo" value="snat" class="sr-only">
+                            <span class="material-symbols-outlined text-2xl text-purple-600">swap_horiz</span>
+                            <span class="text-xs font-semibold text-metin-birincil">Kaynak IP Değiştir</span>
+                            <span class="text-2xs text-metin-ucuncul leading-tight">Gelişmiş (SNAT)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ADIM 2: Ayrıntılar -->
+                <div class="space-y-3">
+                    <p class="text-sm font-semibold text-metin-birincil flex items-center gap-2">
+                        <span class="w-5 h-5 bg-birincil text-white text-2xs rounded-full flex items-center justify-center font-bold">2</span>
+                        Ayrıntılar
+                    </p>
+
+                    <!-- DNAT (Port Yönlendirme) -->
+                    <div id="ynDnatGrup" class="space-y-3 p-3 bg-slate-50 rounded-lg border border-kenarlik">
+                        <p class="text-2xs text-metin-ucuncul">Dışarıdan gelen bir bağlantıyı iç ağdaki bir cihaza ilet (kamera, sunucu, NAS…).</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex flex-col gap-1.5">
+                                <label for="ynProtokol" class="text-xs font-medium text-metin-ikincil">Protokol</label>
+                                <select id="ynProtokol" class="input-field">
+                                    <option value="tcp">TCP</option>
+                                    <option value="udp">UDP</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <label for="ynDisPort" class="text-xs font-medium text-metin-ikincil">Dışarıdan gelen port</label>
+                                <input id="ynDisPort" class="input-field font-kod" placeholder="örn. 8080" inputmode="numeric" type="text" />
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex flex-col gap-1.5">
+                                <label for="ynIcIp" class="text-xs font-medium text-metin-ikincil">Hangi cihaza? (İç IP)</label>
+                                <input id="ynIcIp" class="input-field font-kod" placeholder="örn. 192.168.1.10" type="text" />
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <label for="ynIcPort" class="text-xs font-medium text-metin-ikincil">Cihazdaki port</label>
+                                <input id="ynIcPort" class="input-field font-kod" placeholder="örn. 80" inputmode="numeric" type="text" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Masquerade (İnternet Paylaşımı) -->
+                    <div id="ynMasqGrup" class="hidden p-3 bg-green-50 rounded-lg border border-green-200">
+                        <p class="text-2xs text-metin-ikincil">LAN'daki cihazlar bu firewall üzerinden internete çıkar. Yalnızca aşağıdaki <b>çıkış arayüzünü</b> doğrula, yeterli.</p>
+                    </div>
+
+                    <!-- SNAT (Gelişmiş) -->
+                    <div id="ynSnatGrup" class="hidden space-y-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                        <p class="text-2xs text-metin-ikincil">Giden trafiğin kaynak IP'sini belirtilen IP ile değiştir (ileri seviye).</p>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="ynSnatIp" class="text-xs font-medium text-metin-ikincil">Yeni kaynak IP</label>
+                            <input id="ynSnatIp" class="input-field font-kod" placeholder="örn. 10.0.0.5" type="text" />
+                        </div>
+                    </div>
+
+                    <!-- Çıkış (WAN) arayüz — her senaryoda -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="ynDisArayuz" class="text-xs font-medium text-metin-ikincil">İnternete çıkış arayüzü (WAN) <span class="text-durum-kritik">*</span></label>
+                        <input id="ynDisArayuz" required class="input-field font-kod" value="enp0s3" placeholder="enp0s3" type="text" />
+                        <p class="text-2xs text-metin-ucuncul">Firewall'ın internete bağlı arayüzü. VirtualBox NAT kurulumunda genellikle <span class="font-kod">enp0s3</span>.</p>
+                    </div>
+                </div>
+
+                <!-- ADIM 3: Ad -->
+                <div class="space-y-2">
+                    <p class="text-sm font-semibold text-metin-birincil flex items-center gap-2">
+                        <span class="w-5 h-5 bg-birincil text-white text-2xs rounded-full flex items-center justify-center font-bold">3</span>
+                        Kurala bir ad ver
+                    </p>
+                    <input id="ynKuralAdi" required class="input-field" placeholder="örn. Web sunucusu yönlendirme" type="text" />
+                </div>
+
+                <!-- Gelişmiş -->
+                <details class="rounded-lg border border-kenarlik">
+                    <summary class="px-3 py-2.5 text-xs font-semibold text-metin-ikincil cursor-pointer select-none flex items-center gap-1.5 hover:bg-slate-50 rounded-lg">
+                        <span class="material-symbols-outlined text-base">tune</span> Gelişmiş ayarlar
+                    </summary>
+                    <div class="px-3 py-3 border-t border-kenarlik">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="ynAciklama" class="text-xs font-medium text-metin-ikincil">Açıklama</label>
+                            <input id="ynAciklama" class="input-field" placeholder="İsteğe bağlı not" type="text" />
+                        </div>
+                    </div>
+                </details>
+
+                <div id="modalYonlendirmeHata" class="hidden p-3 bg-red-50 border border-red-200 text-durum-kritik text-sm font-medium rounded-lg"></div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-kenarlik">
+                    <button type="button" id="btnYonlendirmeModalIptal" class="px-5 py-2.5 border border-kenarlik hover:bg-slate-50 text-metin-ikincil font-medium text-sm rounded-lg transition-colors">İptal</button>
+                    <button type="submit" id="btnYonlendirmeKaydet" class="px-5 py-2.5 bg-birincil hover:bg-birincil-koyu text-white font-medium text-sm rounded-lg transition-colors flex items-center gap-2 shadow-yumusak">
+                        <span class="material-symbols-outlined text-lg">save</span> Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+</html>
